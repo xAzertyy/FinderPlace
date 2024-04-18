@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Apr 17, 2024 alle 19:41
+-- Creato il: Apr 18, 2024 alle 20:51
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.0.30
 
@@ -43,7 +43,9 @@ INSERT INTO `locations` (`ID_pos`, `Nome`, `Tipologia`, `lat`, `lon`) VALUES
 (1, 'fdfdfv', 'Cafè', 37.3217, 13.6671),
 (2, 'Caprice', 'Fast Food', 37.3217, 13.6671),
 (3, 'Caprice', 'Fast Food', 37.3217, 13.6671),
-(4, 'Caprice', 'Fast Food', 37.3217, 13.6671);
+(4, 'Caprice', 'Fast Food', 37.3217, 13.6671),
+(5, 'Caprice', 'Fast Food', 37.3217, 13.6671),
+(6, 'Caprice', 'Reasturant', 37.3217, 13.6671);
 
 -- --------------------------------------------------------
 
@@ -52,6 +54,7 @@ INSERT INTO `locations` (`ID_pos`, `Nome`, `Tipologia`, `lat`, `lon`) VALUES
 --
 
 CREATE TABLE `tipologia` (
+  `id_tipo` int(255) NOT NULL,
   `tipo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -59,11 +62,12 @@ CREATE TABLE `tipologia` (
 -- Dump dei dati per la tabella `tipologia`
 --
 
-INSERT INTO `tipologia` (`tipo`) VALUES
-('Cafè'),
-('Fast Food'),
-('Pizzerie'),
-('Reasturant');
+INSERT INTO `tipologia` (`id_tipo`, `tipo`) VALUES
+(1, 'Cafè'),
+(2, 'Bakery'),
+(3, 'Reasturant'),
+(4, 'Pizzeria'),
+(5, 'FastFood');
 
 --
 -- Indici per le tabelle scaricate
@@ -79,7 +83,7 @@ ALTER TABLE `locations`
 -- Indici per le tabelle `tipologia`
 --
 ALTER TABLE `tipologia`
-  ADD PRIMARY KEY (`tipo`);
+  ADD PRIMARY KEY (`id_tipo`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -89,7 +93,13 @@ ALTER TABLE `tipologia`
 -- AUTO_INCREMENT per la tabella `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `ID_pos` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID_pos` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT per la tabella `tipologia`
+--
+ALTER TABLE `tipologia`
+  MODIFY `id_tipo` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

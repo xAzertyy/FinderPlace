@@ -18,3 +18,24 @@ function f() {
     document.getElementById("valoreDinamico").innerHTML = a + "km";
 }
 document.getElementById('customRange1').addEventListener('input', f);
+
+
+// Create marker 
+var marker = new google.maps.Marker({
+  position: location,
+  map: map,
+  title: 'Hello World!' // Optional: add a tooltip text.
+});
+
+
+// Add circle overlay and bind to marker
+var circle = new google.maps.Circle({
+  map: map,
+  radius: 1000,    // 10 miles in metres
+  fillColor: '#AA0000'
+});
+circle.bindTo('center', marker, 'position');
+
+
+
+
