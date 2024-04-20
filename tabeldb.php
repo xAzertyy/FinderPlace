@@ -31,7 +31,7 @@
                     <td>" . $row["lat"] . "</td>
                     <td>" . $row["lon"] . "</td>
                     <td>
-                        <a href='update_form.php?id=" . $row["ID_pos"] . "' class='btn btn-primary'>Update</a>
+                        <a href='update_crud.php?id=" . $row["ID_pos"] . "' class='btn btn-primary'>Update</a>
                         <a href='delete.php?id=" . $row["ID_pos"] . "' class='btn btn-danger' onclick='return confirm(\"Are you sure?\")'>Delete</a>
                     </td>
                   </tr>";
