@@ -26,5 +26,4 @@ include_once "navbar.php";
         height: 4rem;
     }
 
-
 </style>
