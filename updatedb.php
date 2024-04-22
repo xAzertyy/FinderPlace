@@ -19,14 +19,17 @@ $resultTipo = mysqli_query($conn, $selectTipo);
 
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="addon-wrapping">Nome attività</span>
-                        <input type="text" name="Nome" class="form-control" aria-describedby="addon-wrapping"><br>
+                        <input type="text" name="Nome" class="form-control" placeholder="inserisci nome..."
+                            aria-describedby="addon-wrapping"><br>
                     </div>
 
                     <div class="input-group">
                         <span class="input-group-text">Latitudine</span>
-                        <input type="text" name="lat" class="form-control" aria-describedby="addon-wrapping"><br>
+                        <input type="text" name="lat" class="form-control" placeholder="inserisci latitudine..."
+                            aria-describedby="addon-wrapping"><br>
                         <span class="input-group-text">Longitudine</span>
-                        <input type="text" name="lon" class="form-control" aria-describedby="addon-wrapping"><br>
+                        <input type="text" name="lon" class="form-control" placeholder="inserisci longitudine..."
+                            aria-describedby="addon-wrapping"><br>
                     </div>
 
 
@@ -35,8 +38,9 @@ $resultTipo = mysqli_query($conn, $selectTipo);
                         <span class="input-group-text" id="addon-wrapping">Tipologia</span>
 
                         <select name="tipologia" class="form-select" aria-label="Default select example">
-
+                            <option selected>Choose a place</option>
                             <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
+
                                 echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
                             } ?>
                         </select>

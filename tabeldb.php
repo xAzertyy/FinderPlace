@@ -2,9 +2,9 @@
 
 
  <h2>List of markers</h2>
-
-<table class="table table-striped">
-    <thead class="table-dark">
+<div id="tab_div">
+<table id="tab" class="table table-striped align-middle">
+    <thead class="table-dark ">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Name</th>
@@ -42,3 +42,4 @@
         ?>
     </tbody>
 </table>
+    </div>

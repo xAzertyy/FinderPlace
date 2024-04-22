@@ -13,7 +13,6 @@ include_once "navbar.php";
 
 <style>
     #nav {
-
         background-color: red !important;
     }
 
@@ -25,5 +24,26 @@ include_once "navbar.php";
         width: 4rem;
         height: 4rem;
     }
+
+
+    h1, h2{
+        text-align: center;
+        padding: 1rem;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    #tab{
+        width: 100% !important;
+        margin-right: 2rem;
+        text-align: center;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    #tab_div{
+        margin: 2rem;
+        padding-bottom: 2rem;
+    }
+
 
 </style>

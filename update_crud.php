@@ -4,7 +4,8 @@ require_once "com.php";
 
 $conn = getdb();
 
-function updateRecord($conn) {
+function updateRecord($conn)
+{
     if (isset($_POST['ID_pos'], $_POST['Nome'], $_POST['lat'], $_POST['lon'], $_POST['tipologia'])) {
         $id = $_POST['ID_pos'];
         $Nome = $_POST['Nome'];
@@ -21,7 +22,7 @@ function updateRecord($conn) {
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-            echo "Record updated successfully.";
+            header("Location: tabeldb.php");
         } else {
             echo "Error updating record: " . $conn->error;
         }
@@ -30,7 +31,8 @@ function updateRecord($conn) {
 }
 
 
-function displayForm($conn, $id) {
+function displayForm($conn, $id)
+{
     $sql = "SELECT * FROM locations WHERE ID_pos = ?";
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
@@ -45,9 +47,18 @@ function displayForm($conn, $id) {
     $resultTipo = mysqli_query($conn, $sqlTipo);
 
     if ($row) {
-        echo "<form action='' method='post'>
+        echo
+            "<table align=\"center\">
+        <tr>
+            <td>
+        <form id=\"upt\" action='' method='post'>
             <input type='hidden' name='ID_pos' value='" . htmlspecialchars($row['ID_pos']) . "'>
-            <input type='text' name='Nome' value='" . htmlspecialchars($row['Nome']) . "'>
+
+            <div class=\"input-group flex-nowrap\">
+            <span class=\"input-group-text\" id=\"addon-wrapping\">Nome attività</span>
+            <input type=\"text\" name=\"Nome\" class=\"form-control\" aria-describedby=\"addon-wrapping\"  value='" . htmlspecialchars($row['Nome']) . "'><br>
+        </div>
+
 
             <div class='input-group'>
                 <span class='input-group-text'>Latitudine</span>
@@ -59,18 +70,21 @@ function displayForm($conn, $id) {
             <div class='input-group flex-nowrap'>
                 <span class='input-group-text' id='addon-wrapping'>Tipologia</span>
                 <select name='tipologia' class='form-select' aria-label='Default select example'>";
-                while ($TipoRow = mysqli_fetch_assoc($resultTipo)) {
-                    echo "<option value='" . htmlspecialchars($TipoRow["Tipologia"]) . "'>" . htmlspecialchars($TipoRow["Tipologia"]) . "</option>";
-                }
-                echo "</select>
+        while ($TipoRow = mysqli_fetch_assoc($resultTipo)) {
+            echo "<option value='" . htmlspecialchars($TipoRow["Tipologia"]) . "'>" . htmlspecialchars($TipoRow["Tipologia"]) . "</option>";
+        }
+        echo "</select>
             </div>
             <div id=\"pre_btt\">
 
-            <input class=\"btn btn-primary\" type=\"submit\" name=\"submit\" value=\"Invia\">
+            <input class=\"btn btn-primary\" type=\"submit\" name=\"submit\" value=\"Aggiorna\">
             <a href=\"index.php\"><button type=\"button\"
                     class=\"btn btn-outline-secondary\">Indietro</button></a>
         </div>
-          </form>";
+          </form>
+          </td>
+          </tr>
+      </table>";
     } else {
         echo "No record found.";
     }
