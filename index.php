@@ -12,7 +12,7 @@
 
     $conn = getdb();
 
-    $selectTipo = "SELECT * FROM tipologia ORDER BY tipo";
+    $selectTipo = "SELECT tipologia FROM locations group by tipologia";
     $resultTipo = mysqli_query($conn, $selectTipo);
     ?>
 
@@ -25,11 +25,11 @@
         <select class="form-select">
             <option selected>Choose a place</option>
             <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
-                echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
+                echo "<option value='" . htmlspecialchars($row["tipologia"]) . "'>" . htmlspecialchars($row["tipologia"]) . "</option>";
             } ?>
         </select>
 
-        <label style="position: relative;" for="customRange3" class="form-label">Select a range: </label>
+        <label style="position: relative;" class="form-label">Select a range: </label>
         <input style="width: 15rem;" value="5" type="range" class="form-range" min="1" max="15" step="1"
             id="customRange1"><br>
         Range: <p style="display: inline;" id="valoreDinamico">5km</p>
@@ -42,35 +42,9 @@
             ({ key: "AIzaSyCz5IMpbFzjKdjQIvsjwILT6KLggb7NLK8", v: "weekly" });</script>
 
 
-    <script type="text/javascript">
-
-        // Standard google maps function
-        function initialize() {
-            var myLatlng = new google.maps.LatLng(40.779502, -73.967857);
-            var myOptions = {
-                zoom: 12,
-                center: myLatlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            }
-            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-            TestMarker();
-        }
-
-        // Function for adding a marker to the page.
-        function addMarker(location) {
-            marker = new google.maps.Marker({
-                position: location,
-                map: map
-            });
-        }
-
-        // Testing the addMarker function
-        function TestMarker() {
-            CentralPark = new google.maps.LatLng(37.30787477294991, 13.656473895880646);
-            addMarker(CentralPark);
-        }
-    </script>
+    
 </body>
-
-
+<?php
+    include_once "script.php";
+?>
 </html>
