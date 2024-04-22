@@ -1,174 +1,50 @@
+<html>
+
+<head>
+
+    <title>Finder place</title>
+
+</head>
+
+<body>
+    <?php include_once "com.php";
 
 
-function f() {
-    var a = document.getElementById("customRange1").value;
-    document.getElementById("valoreDinamico").innerHTML = a + "km";
-}
-document.getElementById('customRange1').addEventListener('input', f);
+    $conn = getdb();
+
+    $selectTipo = "SELECT tipologia FROM locations group by tipologia";
+    $resultTipo = mysqli_query($conn, $selectTipo);
+    ?>
 
 
-async function initMap() {
-  // Request needed libraries.
-  const { Map } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-  const center = { lat: 37.30788820405282, lng: 13.656478544595746 };
-  const map = new Map(document.getElementById("map"), {
-    zoom: 18,
-    center,
-    mapId: "4504f8b37365c3d0",
-  });
 
-  for (const property of properties) {
-    const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
-      map,
-      content: buildContent(property),
-      position: property.position,
-      title: property.description,
-    });
 
-    AdvancedMarkerElement.addListener("click", () => {
-      toggleHighlight(AdvancedMarkerElement, property);
-    });
-  }
-}
 
-function toggleHighlight(markerView, property) {
-  if (markerView.content.classList.contains("highlight")) {
-    markerView.content.classList.remove("highlight");
-    markerView.zIndex = null;
-  } else {
-    markerView.content.classList.add("highlight");
-    markerView.zIndex = 1;
-  }
-}
+    <div class="left"><br>
 
-function buildContent(property) {
-  const content = document.createElement("div");
+        <select class="form-select">
+            <option selected>Choose a place</option>
+            <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
+                echo "<option value='" . htmlspecialchars($row["tipologia"]) . "'>" . htmlspecialchars($row["tipologia"]) . "</option>";
+            } ?>
+        </select>
 
-  content.classList.add("property");
-  content.innerHTML = `
-    <div class="icon">
-        <i aria-hidden="true" class="fa fa-icon fa-${property.type}" title="${property.type}"></i>
-        <span class="fa-sr-only">${property.type}</span>
+        <label style="position: relative;" class="form-label">Select a range: </label>
+        <input style="width: 15rem;" value="5" type="range" class="form-range" min="1" max="15" step="1"
+            id="customRange1"><br>
+        Range: <p style="display: inline;" id="valoreDinamico">5km</p>
     </div>
-    <div class="details">
-        <div class="price">${property.price}</div>
-        <div class="address">${property.address}</div>
-        <div class="features">
-        <div>
-            <i aria-hidden="true" class="fa fa-bed fa-lg bed" title="bedroom"></i>
-            <span class="fa-sr-only">bedroom</span>
-            <span>${property.bed}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-bath fa-lg bath" title="bathroom"></i>
-            <span class="fa-sr-only">bathroom</span>
-            <span>${property.bath}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-ruler fa-lg size" title="size"></i>
-            <span class="fa-sr-only">size</span>
-            <span>${property.size} ft<sup>2</sup></span>
-        </div>
-        </div>
-    </div>
-    `;
-  return content;
-}
+
+    <div id="map"></div>
+
+    <!-- prettier-ignore -->
+    <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
+            ({ key: "AIzaSyCz5IMpbFzjKdjQIvsjwILT6KLggb7NLK8", v: "weekly" });</script>
 
 
-const properties = [
-  {
-    address: "215 Emily St, MountainView, CA",
-    description: "Single family house with modern design",
-    price: "Ristorante",
-    type: "utensils",
-    bed: 5,
-    bath: 4.5,
-    size: 300,
-    position: {
-      lat: 37.30830848313282,
-      lng: 13.656475862341866,
-    },
-  },
-  {
-    address: "108 Squirrel Ln &#128063;, Menlo Park, CA",
-    description: "Townhouse with friendly neighbors",
-    price: "Bisseria",
-    type: "pizza-slice",
-    bed: 4,
-    bath: 4,
-    size: 800,
-    position: {
-      lat: 37.308103677377154,
-      lng: 13.656832596137313,
-    },
-  },
-  {
-    address: "100 Chris St, Portola Valley, CA",
-    description: "Spacious warehouse great for small business",
-    price: "Bread",
-    type: "bread-slice",
-    bed: 4,
-    bath: 4,
-    size: 800,
-    position: {
-      lat: 37.30778366726766,
-      lng: 13.656913062402745,
-    },
-  },
-  {
-    address: "98 Aleh Ave, Palo Alto, CA",
-    description: "A lovely store on busy road",
-    price: "Cotti due volte",
-    type: "cookie",
-    bed: 2,
-    bath: 1,
-    size: 210,
-    position: {
-      lat: 37.307580993493396,
-      lng: 13.656738718841567,
-    },
-  },
-  {
-    address: "2117 Su St, MountainView, CA",
-    description: "Single family house near golf club",
-    price: "Droga legale",
-    type: "mug-hot",
-    bed: 4,
-    bath: 3,
-    size: 200,
-    position: {
-      lat: 37.30763432875002,
-      lng: 13.656127175253452,
-    },
-  },
-  {
-    address: "197 Alicia Dr, Santa Clara, CA",
-    description: "Multifloor large warehouse",
-    price: "Cocoa Favara",
-    type: "burger",
-    bed: 5,
-    bath: 4,
-    size: 700,
-    position: {
-      lat: 37.307860469817754,
-      lng: 13.656052073409295,
-    },
-  },
-  {
-  address: "197 Alicia Dr, Santa Clara, CA",
-  description: "Multifloor large warehouse",
-  price: "Ceres hub",
-  type: "beer-mug-empty",
-  bed: 5,
-  bath: 4,
-  size: 700,
-  position: {
-    lat: 37.30808447680866,
-    lng: 13.656191548262726,
-  },
-},
-];
-
-initMap();
+    
+</body>
+<?php
+    include_once "script.php";
+?>
+</html>
