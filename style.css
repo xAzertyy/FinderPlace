@@ -47,6 +47,7 @@ body {
   --bread-slice-color: #7c3f00;
   --cookie-color: #967259;
   --beer-mug-empty-color: #000000;
+  --unknown-color: red;
 }
 
 
@@ -278,4 +279,20 @@ body {
 
 .property:not(.highlight):has(.fa-beer-mug-empty)::after {
   border-top: 9px solid var(--beer-mug-empty-color);
+}
+
+
+/*
+ * unknown (question icon) icon colors.
+ */
+.property.highlight:has(.fa-question) .icon {
+  color: var(--unknown-color);
+}
+
+.property:not(.highlight):has(.fa-question) {
+  background-color: var(--unknown-color);
+}
+
+.property:not(.highlight):has(.fa-question)::after {
+  border-top: 9px solid var(--unknown-color);
 }
