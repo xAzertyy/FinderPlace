@@ -12,7 +12,7 @@
 
     $conn = getdb();
 
-    $selectTipo = "SELECT tipologia FROM locations group by tipologia";
+    $selectTipo = "SELECT tipo FROM tipologia group by tipo";
     $resultTipo = mysqli_query($conn, $selectTipo);
     ?>
 
@@ -25,7 +25,7 @@
         <select class="form-select">
             <option selected>Choose a place</option>
             <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
-                echo "<option value='" . htmlspecialchars($row["tipologia"]) . "'>" . htmlspecialchars($row["tipologia"]) . "</option>";
+                echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
             } ?>
         </select>
 

@@ -13,6 +13,7 @@ include_once "navbar.php";
 <style>
     #nav {
         background-color: red !important;
+       
     }
 
     .alert {
