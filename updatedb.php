@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once "com.php";
 
 $conn = getdb();
@@ -14,7 +14,8 @@ $resultTipo = mysqli_query($conn, $selectTipo);
     <table align="center">
         <tr>
             <td>
-                <form id="aggiorna" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                <form id="agg" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
 
                     <div class="input-group flex-nowrap">
@@ -67,6 +68,7 @@ $resultTipo = mysqli_query($conn, $selectTipo);
             </td>
         </tr>
     </table>
+    </div>
     <?php
 
 
