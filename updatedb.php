@@ -2,6 +2,11 @@
 session_start();
 require_once "com.php";
 
+if(!isset($_SESSION['password'])){
+
+    header("Location: login.php");
+}
+
 $conn = getdb();
 
 $selectTipo = "SELECT * FROM tipologia ORDER BY tipo";

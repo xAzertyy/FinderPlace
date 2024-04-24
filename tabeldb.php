@@ -2,6 +2,10 @@
 
 session_start();
 require_once "com.php"; 
+if(!isset($_SESSION['password'])){
+
+    header("Location: login.php");
+}
 ?>
 
 <!DOCTYPE html>

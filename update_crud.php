@@ -12,7 +12,7 @@ function updateRecord($conn)
         $Nome = $_POST['nome'];
         $lat = $_POST['lat'];
         $lon = $_POST['lon'];
-        $Tipologia = $_POST['tipologia']; // Ensure this matches case in SQL query
+        $Tipologia = $_POST['tipologia'];
 
         $sql = "UPDATE locations SET nome = ?, lat = ?, lon = ?, tipologia = ? WHERE id_pos = ?";
         $stmt = $conn->prepare($sql);

@@ -53,8 +53,5 @@ include_once "navbar.php";
         margin: 2rem;
         padding-bottom: 2rem;
     }
-     li{
-        
-     }
 
 </style>

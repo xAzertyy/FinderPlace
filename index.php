@@ -1,27 +1,19 @@
 <?php session_start(); ?>
-
-
 <html>
-
 <head>
 
-    <title>Finder place</title>
+ <title>Finder place</title>
 
 </head>
 
 <body>
     <?php include_once "com.php";
 
-
     $conn = getdb();
 
     $selectTipo = "SELECT tipo FROM tipologia group by tipo";
     $resultTipo = mysqli_query($conn, $selectTipo);
     ?>
-
-
-
-
 
     <div class="left"><br>
 
@@ -45,9 +37,10 @@
             ({ key: "AIzaSyCz5IMpbFzjKdjQIvsjwILT6KLggb7NLK8", v: "weekly" });</script>
 
 
-    
+
 </body>
 <?php
-    include_once "script.php";
+include_once "script.php";
 ?>
+
 </html>

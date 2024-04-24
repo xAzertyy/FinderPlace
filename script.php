@@ -1,7 +1,4 @@
 <script>
-
-
-
     function f() {
         var a = document.getElementById("customRange1").value;
         document.getElementById("valoreDinamico").innerHTML = a + "km";
@@ -12,27 +9,73 @@
     async function initMap() {
         let properties = markers();
         // Request needed libraries.
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const center = { lat: 37.30797717620742, lng: 13.656473896658605 };
+       
+        const {
+            Map, InfoWindow
+        } = await google.maps.importLibrary("maps");
+        const {
+            AdvancedMarkerElement
+        } = await google.maps.importLibrary("marker");
+        const center = {
+            lat: 37.30797717620742,
+            lng: 13.656473896658605
+        };
         const map = new Map(document.getElementById("map"), {
             zoom: 19,
             center,
             mapId: "4504f8b37365c3d0",
         });
 
-        for (const property of properties) {
-            const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
-                map,
-                content: buildContent(property),
-                position: property.position,
-                title: property.description,
-            });
+        const infoWindow = new InfoWindow();
 
-            AdvancedMarkerElement.addListener("click", () => {
-                toggleHighlight(AdvancedMarkerElement, property);
-            });
-        }
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                const draggableMarker = new AdvancedMarkerElement({
+                    position: pos,
+                    map,
+                    title: "Io sono qui!",
+                    gmpDraggable: true,
+                });
+
+
+                map.setCenter(pos);
+
+                draggableMarker.addListener("dragend", (event) => {
+            const position = draggableMarker.position;
+
+            infoWindow.close();
+            infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
+            infoWindow.open(draggableMarker.map, draggableMarker);
+        });
+            },
+            () => {
+                handleLocationError(true, infoWindow, map.getCenter());
+            },
+        );
+    } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+
+
+    for (const property of properties) {
+        const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
+            map,
+            content: buildContent(property),
+            position: property.position,
+            title: property.description,
+        });
+
+        AdvancedMarkerElement.addListener("click", () => {
+            toggleHighlight(AdvancedMarkerElement, property);
+        });
+    }
     }
 
     function toggleHighlight(markerView, property) {
@@ -106,13 +149,13 @@
                 return "beer-mug-empty";
             default:
                 return "question";
-
         }
     }
 
 
 
     ?>
+
     function markers() {
         <?php
         $conn = getdb();
@@ -147,12 +190,10 @@
 
     }
 
-
-
+    initMap();
 </script>
 
 <script>
-
     function mod() {
 
         <?php
@@ -173,8 +214,15 @@
                 </div>
             </div>
         </div>"
-            ?>
+        ?>
 
     }
+</script>
+
+
+
+<script>
+
+
 
 </script>
