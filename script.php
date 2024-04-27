@@ -9,14 +9,14 @@
     async function initMap() {
         let properties = markers();
         // Request needed libraries.
-       
+
         const {
             Map, InfoWindow
         } = await google.maps.importLibrary("maps");
         const {
             AdvancedMarkerElement
         } = await google.maps.importLibrary("marker");
-        const center = {
+        center = {
             lat: 37.30797717620742,
             lng: 13.656473896658605
         };
@@ -26,56 +26,108 @@
             mapId: "4504f8b37365c3d0",
         });
 
+
+// PROBABILMENTE BASTA CAMBIARE QUESTO CON LA POSIZIONE DEL MARKER DRAGGABLE, MA SONOSTANCO
+        var marker = new google.maps.Marker({
+            map: map,
+            position: center,
+            title: "name"
+        });
+
+
+
+
+        var circle;
+        // Add circle overlay and bind to marker
+        $('#customRange1').change(function () {
+            var new_rad = $(this).val();
+            var rad = new_rad * 1609.34;
+            if (!circle || !circle.setRadius) {
+                circle = new google.maps.Circle({
+                    map: map,
+                    radius: rad,
+                    fillColor: '#555',
+                    strokeColor: '#ffffff',
+                    strokeOpacity: 0.1,
+                    strokeWeight: 3
+                });
+                circle.bindTo('center', marker, 'position');
+
+            } else circle.setRadius(rad);
+
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         const infoWindow = new InfoWindow();
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
-
-                const draggableMarker = new AdvancedMarkerElement({
-                    position: pos,
-                    map,
-                    title: "Io sono qui!",
-                    gmpDraggable: true,
-                });
-
-
-                map.setCenter(pos);
-
-                draggableMarker.addListener("dragend", (event) => {
-            const position = draggableMarker.position;
-
-            infoWindow.close();
-            infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
-            infoWindow.open(draggableMarker.map, draggableMarker);
-        });
-            },
-            () => {
-                handleLocationError(true, infoWindow, map.getCenter());
-            },
-        );
-    } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-    }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+                    draggableMarker = new AdvancedMarkerElement({
+                        position: pos,
+                        map,
+                        title: "Io sono qui!",
+                        gmpDraggable: true,
+                    });
 
 
-    for (const property of properties) {
-        const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
-            map,
-            content: buildContent(property),
-            position: property.position,
-            title: property.description,
-        });
+                    map.setCenter(pos);
 
-        AdvancedMarkerElement.addListener("click", () => {
-            toggleHighlight(AdvancedMarkerElement, property);
-        });
-    }
+                    draggableMarker.addListener("dragend", (event) => {
+                        const position = draggableMarker.position;
+
+                        infoWindow.close();
+                        infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
+                        infoWindow.open(draggableMarker.map, draggableMarker);
+                    });
+                },
+                () => {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                },
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+
+
+
+
+
+
+
+
+
+        for (const property of properties) {
+            const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
+                map,
+                content: buildContent(property),
+                position: property.position,
+                title: property.description,
+            });
+
+            AdvancedMarkerElement.addListener("click", () => {
+                toggleHighlight(AdvancedMarkerElement, property);
+            });
+        }
     }
 
     function toggleHighlight(markerView, property) {
@@ -87,6 +139,14 @@
             markerView.zIndex = 1;
         }
     }
+
+
+
+
+
+
+
+
 
     function buildContent(property) {
         const content = document.createElement("div");
@@ -190,7 +250,6 @@
 
     }
 
-    initMap();
 </script>
 
 <script>
@@ -214,9 +273,14 @@
                 </div>
             </div>
         </div>"
-        ?>
+            ?>
 
     }
+
+
+
+
+
 </script>
 
 
