@@ -1,13 +1,14 @@
 <script>
-    function f() {
-        var a = document.getElementById("customRange1").value;
-        document.getElementById("valoreDinamico").innerHTML = a + "km";
-    }
-    document.getElementById('customRange1').addEventListener('input', f);
+
+
+
+    initMap();
+
+    let map, infoWindow;
 
 
     async function initMap() {
-        let properties = markers();
+
         // Request needed libraries.
 
         const {
@@ -16,105 +17,26 @@
         const {
             AdvancedMarkerElement
         } = await google.maps.importLibrary("marker");
-        center = {
+        const center = {
             lat: 37.30797717620742,
             lng: 13.656473896658605
         };
-        const map = new Map(document.getElementById("map"), {
+        map = new Map(document.getElementById("map"), {
             zoom: 19,
             center,
             mapId: "4504f8b37365c3d0",
         });
 
 
-// PROBABILMENTE BASTA CAMBIARE QUESTO CON LA POSIZIONE DEL MARKER DRAGGABLE, MA SONOSTANCO
-        var marker = new google.maps.Marker({
-            map: map,
-            position: center,
-            title: "name"
-        });
+        infoWindow = new google.maps.InfoWindow();
 
-
-
-
-        var circle;
-        // Add circle overlay and bind to marker
-        $('#customRange1').change(function () {
-            var new_rad = $(this).val();
-            var rad = new_rad * 1609.34;
-            if (!circle || !circle.setRadius) {
-                circle = new google.maps.Circle({
-                    map: map,
-                    radius: rad,
-                    fillColor: '#555',
-                    strokeColor: '#ffffff',
-                    strokeOpacity: 0.1,
-                    strokeWeight: 3
-                });
-                circle.bindTo('center', marker, 'position');
-
-            } else circle.setRadius(rad);
-
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        const infoWindow = new InfoWindow();
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    draggableMarker = new AdvancedMarkerElement({
-                        position: pos,
-                        map,
-                        title: "Io sono qui!",
-                        gmpDraggable: true,
-                    });
-
-
-                    map.setCenter(pos);
-
-                    draggableMarker.addListener("dragend", (event) => {
-                        const position = draggableMarker.position;
-
-                        infoWindow.close();
-                        infoWindow.setContent(`Pin dropped at: ${position.lat}, ${position.lng}`);
-                        infoWindow.open(draggableMarker.map, draggableMarker);
-                    });
-                },
-                () => {
-                    handleLocationError(true, infoWindow, map.getCenter());
-                },
-            );
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
+        try {
+            await getLocation();
+        } catch (error) {
+            console.error("Error getting location:", error);
         }
 
-
-
-
-
-
-
-
-
+        let properties = markers();
 
         for (const property of properties) {
             const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
@@ -128,7 +50,71 @@
                 toggleHighlight(AdvancedMarkerElement, property);
             });
         }
+
+
+
     }
+
+    function getLocation() {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    };
+
+
+                    map.setCenter(pos); // Assuming you have a map object defined
+
+                    draggableMarker = new google.maps.Marker({
+                        map: map,
+                        position: pos,
+                        title: "name",
+                        draggable: true
+                    });
+
+
+
+
+                    draggableMarker.addListener("dragend", (event) => {
+                        const position = draggableMarker.position;
+                        infoWindow.close();
+                        infoWindow.setContent(`Pin dropped at: ${draggableMarker.position.lat()}, ${draggableMarker.position.lng()}`);
+                        <?php $myLat = "</script><script>document.write(draggableMarker.position.lat())</script><script>"; ?>
+                        infoWindow.open(draggableMarker.map, draggableMarker);
+                    });
+
+                    var circle;
+                    // Add circle overlay and bind to marker
+                    $('#customRange1').change(function () {
+                        var new_rad = $(this).val();
+                        var rad = new_rad * 1000;
+                        if (!circle || !circle.setRadius) {
+                            circle = new google.maps.Circle({
+                                map: map,
+                                radius: rad,
+                                fillColor: '#555',
+                                strokeColor: '#ffffff',
+                                strokeWeight: 3,
+                                strokeOpacity: 0.1
+                            });
+                            circle.bindTo('center', draggableMarker, 'position');
+                        } else circle.setRadius(rad);
+                    });
+
+                    // Call resolve to indicate successful location retrieval
+                    resolve({ lat: window.myLat, lng: window.myLng });
+                },
+                (error) => {
+                    // Call reject if there's an error
+                    reject(error);
+                }
+            );
+        });
+    }
+
+
 
     function toggleHighlight(markerView, property) {
         if (markerView.content.classList.contains("highlight")) {
@@ -139,13 +125,6 @@
             markerView.zIndex = 1;
         }
     }
-
-
-
-
-
-
-
 
 
     function buildContent(property) {
@@ -184,7 +163,6 @@
 
 
 
-    initMap();
 
 
     <?php
@@ -213,7 +191,6 @@
     }
 
 
-
     ?>
 
     function markers() {
@@ -225,22 +202,25 @@
         echo "properties = [";
 
         while ($row = mysqli_fetch_assoc($result)) {
-            $tipoAttuale = $row['tipologia'];
-            $typeString = checkType($tipoAttuale);
+            $typeString = checkType($row['tipologia']);
+            // distanza (latitudineDesinazione, longitudineDesinazione) di base calcola la distanza tra le coordinate attuali del marker e i parametri dati
+            // ma se metto questo if non va piu, diopo
+           // if (distanza(37.30729173789876, 13.656352829292636) < 1000) {
 
-            echo "{";
-            echo "address: '" . $row['descrizione'] . "',";
-            echo "description: 'descriptionPlaceholder',";
-            echo "price: '" . $row['nome'] . "',";
-            echo "type: '" . $typeString . "',";
-            echo "bed: 0,";
-            echo "bath: 4,";
-            echo "size: 1000,";
-            echo "position: {";
-            echo "lat: " . $row['lat'] . ",";
-            echo "lng: " . $row['lon'];
-            echo "},";
-            echo "},";
+                echo "{";
+                echo "address: '" . $row['descrizione'] . "',";
+                echo "description: 'descriptionPlaceholder',";
+                echo "price: '" . $row['nome'] . "',";
+                echo "type: '" . $typeString . "',";
+                echo "bed: 0,";
+                echo "bath: 4,";
+                echo "size: 1000,";
+                echo "position: {";
+                echo "lat: " . $row['lat'] . ",";
+                echo "lng: " . $row['lon'];
+                echo "},";
+                echo "},";
+            //}
         }
 
         echo "];";
@@ -249,6 +229,44 @@
         return properties;
 
     }
+
+    
+
+
+    <?php function distanza($lat, $lng)
+    { ?>
+
+        lat = <?php echo $lat ?>;
+        lng = <?php echo $lng ?>;
+
+
+        myLat = draggableMarker.position.lat();
+        myLng = draggableMarker.position.lng();
+
+
+        var earthRadiusMeter = 6378137; // Earth’s mean radius in meter
+        var distanceLat = rad(myLat - lat);
+        var distanceLng = rad(myLng - lng);
+        var a = Math.sin(distanceLat / 2) * Math.sin(distanceLat / 2) + Math.cos(rad(lat)) * Math.cos(rad(myLat)) * Math.sin(distanceLng / 2) * Math.sin(distanceLng / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = earthRadiusMeter * c;
+        return d; // returns the distance in meter
+
+
+        <?php
+    } ?>
+
+    var rad = function (x) {
+        return x * Math.PI / 180;
+    };
+
+
+    document.getElementById('customRange1').addEventListener('input', f);
+    function f() {
+        var a = document.getElementById("customRange1").value;
+        document.getElementById("valoreDinamico").innerHTML = a + "km";
+    }
+
 
 </script>
 
@@ -278,14 +296,6 @@
     }
 
 
-
-
-
-</script>
-
-
-
-<script>
 
 
 
