@@ -233,11 +233,10 @@
     
 
 
-    <?php function distanza($lat, $lng)
-    { ?>
+     function distanza(lat, lng)
+    { 
 
-        lat = <?php echo $lat ?>;
-        lng = <?php echo $lng ?>;
+        
 
 
         myLat = draggableMarker.position.lat();
@@ -253,8 +252,8 @@
         return d; // returns the distance in meter
 
 
-        <?php
-    } ?>
+      
+    } 
 
     var rad = function (x) {
         return x * Math.PI / 180;
