@@ -1,6 +1,11 @@
 <?php
-
+session_start();
 require_once "com.php";
+
+if(!isset($_SESSION['password'])){
+
+    header("Location: login.php");
+}
 
 $conn = getdb();
 
@@ -14,7 +19,8 @@ $resultTipo = mysqli_query($conn, $selectTipo);
     <table align="center">
         <tr>
             <td>
-                <form id="aggiorna" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+            <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                <form id="agg" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
 
 
                     <div class="input-group flex-nowrap">
@@ -30,6 +36,12 @@ $resultTipo = mysqli_query($conn, $selectTipo);
                         <span class="input-group-text">Longitudine</span>
                         <input type="text" name="lon" class="form-control" placeholder="inserisci longitudine..."
                             aria-describedby="addon-wrapping"><br>
+
+
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Descrizione</span>
+                        <textarea class="form-control" id="desc" name="descrizione" rows="1"></textarea>
                     </div>
 
 
@@ -61,6 +73,7 @@ $resultTipo = mysqli_query($conn, $selectTipo);
             </td>
         </tr>
     </table>
+    </div>
     <?php
 
 
@@ -68,10 +81,11 @@ $resultTipo = mysqli_query($conn, $selectTipo);
         $Nome = $_POST['Nome'];
         $lat = $_POST['lat'];
         $lon = $_POST['lon'];
+        $desc = $_POST['descrizione'];
         $tipologia = $_POST['tipologia'];
 
         if ($Nome && $tipologia) {
-            $insertDati = "INSERT INTO locations (Nome, lat, lon, Tipologia) VALUES ('$Nome', '$lat', '$lon','$tipologia')";
+            $insertDati = "INSERT INTO locations (nome, lat, lon, descrizione, tipologia) VALUES ('$Nome', '$lat', '$lon', '$desc', '$tipologia')";
             if ($conn->query($insertDati)) {
 
                 ?>

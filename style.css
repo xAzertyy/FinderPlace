@@ -3,8 +3,8 @@
  * that contains the map. 
  */
 #map {
-  height: 60%;
-  margin-top: 10rem;
+  height: 43rem;
+  top: 10rem; 
 }
 
 /* 
@@ -16,6 +16,10 @@ body {
   margin: 0;
   padding: 0;
 }
+
+
+
+
 
 .leftLogo {
   display: flex;
@@ -33,6 +37,18 @@ body {
   display: block"
 
 }
+
+.right{
+  position: absolute;
+  left: 50vw;
+  top: 7rem;
+  width: 20rem;
+  width: auto;
+  display: block"
+}
+
+
+
 
 body {
   margin: 0;

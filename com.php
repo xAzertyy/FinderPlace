@@ -9,10 +9,21 @@ include_once "navbar.php";
 <link rel="stylesheet" type="text/css" href="./style.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://use.fontawesome.com/releases/v6.2.0/js/all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
 
 <style>
     #nav {
         background-color: red !important;
+        
+
+    }
+
+    li, ul{
+
+        font-weight: bold!important;
     }
 
     .alert {
@@ -25,13 +36,14 @@ include_once "navbar.php";
     }
 
 
-    h1, h2{
+    h1,
+    h2 {
         text-align: center;
         padding: 1rem;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
-    #tab{
+    #tab {
         width: 100% !important;
         margin-right: 2rem;
         text-align: center;
@@ -39,10 +51,9 @@ include_once "navbar.php";
         overflow: hidden;
     }
 
-    #tab_div{
+    #tab_div {
         margin: 2rem;
         padding-bottom: 2rem;
     }
-
 
 </style>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "com.php";
 
 
@@ -6,14 +7,14 @@ $conn = getdb();
 
 function updateRecord($conn)
 {
-    if (isset($_POST['ID_pos'], $_POST['Nome'], $_POST['lat'], $_POST['lon'], $_POST['tipologia'])) {
-        $id = $_POST['ID_pos'];
-        $Nome = $_POST['Nome'];
+    if (isset($_POST['id_pos'], $_POST['nome'], $_POST['lat'], $_POST['lon'], $_POST['tipologia'])) {
+        $id = $_POST['id_pos'];
+        $Nome = $_POST['nome'];
         $lat = $_POST['lat'];
         $lon = $_POST['lon'];
-        $Tipologia = $_POST['tipologia']; // Ensure this matches case in SQL query
+        $Tipologia = $_POST['tipologia'];
 
-        $sql = "UPDATE locations SET Nome = ?, lat = ?, lon = ?, Tipologia = ? WHERE ID_pos = ?";
+        $sql = "UPDATE locations SET nome = ?, lat = ?, lon = ?, tipologia = ? WHERE id_pos = ?";
         $stmt = $conn->prepare($sql);
         if ($stmt === false) {
             die('MySQL prepare error: ' . $conn->error);
@@ -33,7 +34,7 @@ function updateRecord($conn)
 
 function displayForm($conn, $id)
 {
-    $sql = "SELECT * FROM locations WHERE ID_pos = ?";
+    $sql = "SELECT * FROM locations WHERE id_pos = ?";
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
         die('MySQL prepare error: ' . $conn->error);
@@ -43,7 +44,7 @@ function displayForm($conn, $id)
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
-    $sqlTipo = "SELECT DISTINCT Tipologia FROM locations";
+    $sqlTipo = "SELECT DISTINCT tipo FROM tipologia";
     $resultTipo = mysqli_query($conn, $sqlTipo);
 
     if ($row) {
@@ -52,11 +53,11 @@ function displayForm($conn, $id)
         <tr>
             <td>
         <form id=\"upt\" action='' method='post'>
-            <input type='hidden' name='ID_pos' value='" . htmlspecialchars($row['ID_pos']) . "'>
+            <input type='hidden' name='id_pos' value='" . htmlspecialchars($row['id_pos']) . "'>
 
             <div class=\"input-group flex-nowrap\">
             <span class=\"input-group-text\" id=\"addon-wrapping\">Nome attività</span>
-            <input type=\"text\" name=\"Nome\" class=\"form-control\" aria-describedby=\"addon-wrapping\"  value='" . htmlspecialchars($row['Nome']) . "'><br>
+            <input type=\"text\" name=\"nome\" class=\"form-control\" aria-describedby=\"addon-wrapping\"  value='" . htmlspecialchars($row['nome']) . "'><br>
         </div>
 
 
@@ -71,7 +72,7 @@ function displayForm($conn, $id)
                 <span class='input-group-text' id='addon-wrapping'>Tipologia</span>
                 <select name='tipologia' class='form-select' aria-label='Default select example'>";
         while ($TipoRow = mysqli_fetch_assoc($resultTipo)) {
-            echo "<option value='" . htmlspecialchars($TipoRow["Tipologia"]) . "'>" . htmlspecialchars($TipoRow["Tipologia"]) . "</option>";
+            echo "<option value='" . htmlspecialchars($TipoRow["tipo"]) . "'>" . htmlspecialchars($TipoRow["tipo"]) . "</option>";
         }
         echo "</select>
             </div>
