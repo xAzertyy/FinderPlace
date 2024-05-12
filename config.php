@@ -3,7 +3,7 @@ function getdb(){
 	$host = "localhost";
 	$username = "root";
 	$password = "";
-	$db = "finder";
+	$db = "my_finderplace";
 
 	try {	   
 		$conn = mysqli_connect($host, $username, $password, $db);
