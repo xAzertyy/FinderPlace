@@ -15,34 +15,32 @@
     $selectTipo = "SELECT tipo FROM tipologia group by tipo";
     $resultTipo = mysqli_query($conn, $selectTipo);
     ?>
+    <div>
+        <div style="position:absolute; top:7rem;" class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
+            <form action="locationFilter">
+                <select class="form-select">
+                    <option selected>Choose a place</option>
+                    <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
+                        echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
+                    } ?>
+                </select>
+            </form>
+        </div>
 
-    <div class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
-        <form action="locationFilter">
-            <select class="form-select">
-                <option selected>Choose a place</option>
-                <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
-                    echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
-                } ?>
-            </select>
-        </form>
-    </div>
 
+        <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded">
 
-    <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+            <p style="display: inline;" id="valoreDinamico">20</p>km
+            <div>
 
-        <p  style="display: inline;" id="valoreDinamico">20</p>km
-        <div>
-            
-            <label style="position: relative;" class="form-label">Select a range: </label>
-            <input style="width: 15rem;" value="20" type="range" class="form-range" min="1" max="50" step="1" id="customRange1"><br>
+                <label style="position: relative;" class="form-label">Select a range: </label>
+                <input style="width: 15rem;" value="20" type="range" class="form-range" min="1" max="50" step="1" id="customRange1"><br>
+            </div>
         </div>
     </div>
 
 
 
-    <div class="right ">
-        <button class="btn btn-primary" id="sendbtn">Invia</button>
-    </div>
 
     <div id="map"></div>
 
