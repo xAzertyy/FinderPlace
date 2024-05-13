@@ -21,6 +21,13 @@ include_once "navbar.php";
 
     }
 
+    #valoreDinamico{
+        font-size: 78;
+        text-align:center ;
+        justify-content: center;
+        align-items: center;
+    }
+
     li, ul{
 
         font-weight: bold!important;

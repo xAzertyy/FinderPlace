@@ -265,7 +265,7 @@
     document.getElementById('customRange1').addEventListener('input', f);
     function f() {
         var a = document.getElementById("customRange1").value;
-        document.getElementById("valoreDinamico").innerHTML = a + "km";
+        document.getElementById("valoreDinamico").innerHTML = a;
     }
 
         var circle;
