@@ -17,7 +17,23 @@ include_once "navbar.php";
 <style>
     .navbar-toggler,
     #nav {
-        background-color: red !important;
+        background-color: #8A9A5B !important;
+    }
+    .right, .left{
+        background-color:#FEFEFE!important;
+
+    }
+
+    #userdiv, #passdiv{
+
+        padding: 1vh;
+       
+    }
+
+    #userspan, #passspan{
+
+        min-width: 15.4vh;
+
     }
 
     #selectedTipo {
@@ -96,5 +112,9 @@ include_once "navbar.php";
     #tab_div {
         margin: 2rem;
         padding-bottom: 2rem;
+    }
+
+    body{
+        background-color:#F5F5DC;
     }
 </style>

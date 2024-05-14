@@ -29,7 +29,7 @@
                         } ?>
                     </select>
                 </form>
-                <div id="selectedTipo">All</div>
+                <div id="selectedTipo">All <i class="fa fa-infinity"></i></div>
             </div>
 
 
@@ -49,7 +49,7 @@
         </div>
     </div>
     <div class="centered ">
-        <button class="btn btn-primary" id="sendbtn">Invia</button>
+        <button style="padding:1rem; font-size: 30;" class="btn btn-primary" id="sendbtn">Invia</button>
 
     </div>
 
