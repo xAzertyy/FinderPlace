@@ -38,6 +38,18 @@ body {
 
 }
 
+.right{
+  position: absolute;
+  left: 50vw;
+  top: 7rem;
+  width: 20rem;
+  width: auto;
+  display: block"
+}
+
+
+
+
 body {
   margin: 0;
 }

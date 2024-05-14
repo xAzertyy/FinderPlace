@@ -5,6 +5,8 @@
     initMap();
 
     let map, infoWindow;
+    let markersList = [];
+
 
 
     async function initMap() {
@@ -36,24 +38,46 @@
             console.error("Error getting location:", error);
         }
 
-        let properties = markers();
-
-        for (const property of properties) {
-            const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
-                map,
-                content: buildContent(property),
-                position: property.position,
-                title: property.description,
-            });
-
-            AdvancedMarkerElement.addListener("click", () => {
-                toggleHighlight(AdvancedMarkerElement, property);
-            });
-        }
-
+        deleteMarkers();
+        printMarkers();
 
 
     }
+
+    function printMarkers() {
+
+        markersList = [];
+
+        let properties = markers();
+
+        for (const property of properties) {
+            console.log(property.type + " " + typeToIcon("fastfood"));
+
+            //console.log(property.position)
+            if (distanza(property.position.lat, property.position.lng) < get_rad() && property.type == typeToIcon("fastfood") ) {
+                const ame = new google.maps.marker.AdvancedMarkerElement({
+                    map,
+                    content: buildContent(property),
+                    position: property.position,
+                    title: property.description,
+                });
+
+                ame.addListener("click", () => {
+                    toggleHighlight(ame, property);
+                });
+                markersList.push(ame);
+            }
+        }
+    }
+
+    function deleteMarkers(){
+        for (const mk of markersList) {
+            mk.setMap(null);
+        }
+        markersList = []; // Reset the array
+    }
+
+
 
     function getLocation() {
         return new Promise((resolve, reject) => {
@@ -85,23 +109,7 @@
                         infoWindow.open(draggableMarker.map, draggableMarker);
                     });
 
-                    var circle;
-                    // Add circle overlay and bind to marker
-                    $('#customRange1').change(function () {
-                        var new_rad = $(this).val();
-                        var rad = new_rad * 1000;
-                        if (!circle || !circle.setRadius) {
-                            circle = new google.maps.Circle({
-                                map: map,
-                                radius: rad,
-                                fillColor: '#555',
-                                strokeColor: '#ffffff',
-                                strokeWeight: 3,
-                                strokeOpacity: 0.1
-                            });
-                            circle.bindTo('center', draggableMarker, 'position');
-                        } else circle.setRadius(rad);
-                    });
+
 
                     // Call resolve to indicate successful location retrieval
                     resolve({ lat: window.myLat, lng: window.myLng });
@@ -140,21 +148,7 @@
         <div class="price">${property.price}</div>
         <div class="address">${property.address}</div>
         <div class="features">
-        <div>
-            <i aria-hidden="true" class="fa fa-bed fa-lg bed" title="bedroom"></i>
-            <span class="fa-sr-only">bedroom</span>
-            <span>${property.bed}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-bath fa-lg bath" title="bathroom"></i>
-            <span class="fa-sr-only">bathroom</span>
-            <span>${property.bath}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-ruler fa-lg size" title="size"></i>
-            <span class="fa-sr-only">size</span>
-            <span>${property.size} ft<sup>2</sup></span>
-        </div>
+        
         </div>
     </div>
     `;
@@ -190,52 +184,79 @@
         }
     }
 
-
     ?>
+    
+    function typeToIcon(tipologia)
+    {
 
+
+        switch (tipologia) {
+            case "pizzeria":
+                return "pizza-slice";
+            case "cafe":
+                return "mug-hot";
+            case "restaurant":
+                return "utensils";
+            case "bakery":
+                return "bread-slice";
+            case "pastry shop":
+                return "cookie";
+            case "fastfood":
+                return "burger";
+            case "pub":
+                return "beer-mug-empty";
+            default:
+                return "question";
+        }
+    }
+    
+
+
+
+
+
+    
+    
     function markers() {
         <?php
+        // Assuming you have a function getdb() that establishes a database connection
         $conn = getdb();
         $query = "SELECT * FROM locations";
         $result = mysqli_query($conn, $query);
 
-        echo "properties = [";
+        // Create an empty array to store marker properties
+        $properties = array();
 
+        // Loop through the result set and fetch each row
         while ($row = mysqli_fetch_assoc($result)) {
-            $typeString = checkType($row['tipologia']);
-            // distanza (latitudineDesinazione, longitudineDesinazione) di base calcola la distanza tra le coordinate attuali del marker e i parametri dati
-            // ma se metto questo if non va piu, diopo
-           // if (distanza(37.30729173789876, 13.656352829292636) < 1000) {
-
-                echo "{";
-                echo "address: '" . $row['descrizione'] . "',";
-                echo "description: 'descriptionPlaceholder',";
-                echo "price: '" . $row['nome'] . "',";
-                echo "type: '" . $typeString . "',";
-                echo "bed: 0,";
-                echo "bath: 4,";
-                echo "size: 1000,";
-                echo "position: {";
-                echo "lat: " . $row['lat'] . ",";
-                echo "lng: " . $row['lon'];
-                echo "},";
-                echo "},";
-            //}
+            // Push marker properties for each row into the properties array
+            $properties[] = array(
+                'address' => $row['descrizione'],
+                'description' => 'description',
+                'price' => $row['nome'],
+                'type' => checkType($row['tipologia']),
+                'bed' => 1,
+                'bath' => 1,
+                'size' => 1,
+                'position' => array(
+                    'lat' => (float) $row['lat'],
+                    'lng' => (float) $row['lon']
+                )
+            );
         }
-
-        echo "];";
-
         ?>
-        return properties;
+        // Initialize an empty array to store marker properties
+    var properties = <?php echo json_encode($properties); ?>;
+        
+    // Return the array of marker properties
+    return properties;
+}
 
-    }
 
+
+         function distanza(lat, lng)
+        { 
     
-
-
-     function distanza(lat, lng)
-    { 
-
         
 
 
@@ -265,6 +286,34 @@
         var a = document.getElementById("customRange1").value;
         document.getElementById("valoreDinamico").innerHTML = a + "km";
     }
+
+        var circle;
+        // Add circle overlay and bind to marker
+
+        $('#sendbtn').click(function () {
+            console.log("button clicked");
+            var rad = get_rad();
+            if (!circle || !circle.setRadius) {
+                circle = new google.maps.Circle({
+                    map: map,
+                    radius: rad,
+                    fillColor: '#555',
+                    strokeColor: '#ffffff',
+                    strokeWeight: 3,
+                    strokeOpacity: 0.1
+                });
+                circle.bindTo('center', draggableMarker, 'position');
+            } else circle.setRadius(rad);
+            deleteMarkers();
+            printMarkers();
+        });
+
+
+function get_rad() {
+    return document.getElementById("customRange1").value * 1000;
+}
+
+
 
 
 </script>
