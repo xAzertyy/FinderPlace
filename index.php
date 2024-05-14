@@ -19,7 +19,7 @@
     <div class="left"><br>
         <form action="locationFilter">
             <select class="form-select" id="filter">
-                <option selected>Choose a place</option>
+                <option selected>All</option>
                 <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
                     echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
                 } ?>

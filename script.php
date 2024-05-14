@@ -55,7 +55,7 @@
             //console.log(property.type + " " + typeToIcon(filtro));
 
             //console.log(property.position)
-            if (distanza(property.position.lat, property.position.lng) < get_rad() && property.type == typeToIcon(filtro) ) {
+            if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All") ) {
                 const ame = new google.maps.marker.AdvancedMarkerElement({
                     map,
                     content: buildContent(property),
@@ -192,6 +192,8 @@
 
 
         switch (tipologia) {
+            case "Choose a place":
+                return true;
             case "pizzeria":
                 return "pizza-slice";
             case "cafe":
@@ -294,7 +296,7 @@
         $('#sendbtn').click(function () {
             
             filtro = document.getElementById("filter").value;
-            console.log("button clicked");
+            console.log("button clicked, filter: ", filtro);
             var rad = get_rad();
             if (!circle || !circle.setRadius) {
                 circle = new google.maps.Circle({
