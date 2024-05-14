@@ -26,9 +26,9 @@
             </select>
         </form>
         <label style="position: relative;" class="form-label">Select a range: </label>
-        <input style="width: 15rem;" value="20" type="range" class="form-range" min="1" max="10" step="0.5"
+        <input style="width: 15rem;" value="3" type="range" class="form-range" min="1" max="10" step="0.5"
             id="customRange1"><br>
-        Range: <p style="display: inline;" id="valoreDinamico">20km</p>
+        Range: <p style="display: inline;" id="valoreDinamico">3km</p>
     </div>
 
     <div class="right ">

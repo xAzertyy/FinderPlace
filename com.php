@@ -15,7 +15,7 @@ include_once "navbar.php";
 
 
 <style>
-    #nav {
+    .navbar-toggler, #nav {
         background-color: red !important;
         
 

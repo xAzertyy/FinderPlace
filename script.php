@@ -192,8 +192,6 @@
 
 
         switch (tipologia) {
-            case "Choose a place":
-                return true;
             case "pizzeria":
                 return "pizza-slice";
             case "cafe":
@@ -295,7 +293,7 @@
 
         $('#sendbtn').click(function () {
             
-            filtro = document.getElementById("filter").value;
+            filtro = document.getElementById("filter").value;   
             console.log("button clicked, filter: ", filtro);
             var rad = get_rad();
             if (!circle || !circle.setRadius) {
