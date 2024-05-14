@@ -15,10 +15,8 @@ include_once "navbar.php";
 
 
 <style>
-    #nav {
+    .navbar-toggler, #nav {
         background-color: red !important;
-
-
     }
 
     #selectedTipo {
@@ -33,10 +31,10 @@ include_once "navbar.php";
         align-items: center;
     }
 
-    li,
-    ul {
+    li, ul{
 
-        font-weight: bold !important;
+        font-weight: bold!important;
+
     }
 
     .alert {
@@ -68,4 +66,5 @@ include_once "navbar.php";
         margin: 2rem;
         padding-bottom: 2rem;
     }
+
 </style>

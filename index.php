@@ -18,6 +18,7 @@
 
     <div class="left"><br>
 
+
         <div>
             <div style="position:absolute; top:7rem;" class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
             <form action="locationFilter">
@@ -49,11 +50,13 @@
     </div>
     <div class="right ">
         <button class="btn btn-primary" id="sendbtn">Invia</button>
+
     </div>
 
     <div id="map"></div>
 
     <script>
+
         (g => {
             var h, a, k, p = "The Google Maps JavaScript API",
                 c = "google",
@@ -78,6 +81,7 @@
                 }));
             d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
         })({
+
             key: "AIzaSyCz5IMpbFzjKdjQIvsjwILT6KLggb7NLK8",
             v: "weekly",
             // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).

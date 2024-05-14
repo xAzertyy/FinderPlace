@@ -192,8 +192,7 @@
 
 
         switch (tipologia) {
-            case "Choose a place":
-                return true;
+
             case "pizzeria":
                 return "pizza-slice";
             case "cafe":
@@ -287,7 +286,9 @@
     document.getElementById('customRange1').addEventListener('input', f);
     function f() {
         var a = document.getElementById("customRange1").value;
+
         document.getElementById("valoreDinamico").innerHTML = a;
+
     }
 
         var circle;
@@ -295,7 +296,9 @@
 
         $('#sendbtn').click(function () {
             
-            filtro = document.getElementById("filter").value;
+
+            filtro = document.getElementById("filter").value;   
+
             console.log("button clicked, filter: ", filtro);
             var rad = get_rad();
             if (!circle || !circle.setRadius) {
@@ -348,10 +351,6 @@ function get_rad() {
 
     }
 
-
-
-
-
 </script>
 
 <script>
@@ -375,3 +374,4 @@ $(document).ready(function() {
     });
 });
 </script>
+
