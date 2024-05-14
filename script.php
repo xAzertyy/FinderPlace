@@ -4,7 +4,7 @@
 
     initMap();
 
-    let map, infoWindow;
+    let map, infoWindow, filtro
     let markersList = [];
 
 
@@ -51,10 +51,11 @@
         let properties = markers();
 
         for (const property of properties) {
-            console.log(property.type + " " + typeToIcon("fastfood"));
+            //console.log("filtro " + filtro);
+            //console.log(property.type + " " + typeToIcon(filtro));
 
             //console.log(property.position)
-            if (distanza(property.position.lat, property.position.lng) < get_rad() && property.type == typeToIcon("fastfood") ) {
+            if (distanza(property.position.lat, property.position.lng) < get_rad() && property.type == typeToIcon(filtro) ) {
                 const ame = new google.maps.marker.AdvancedMarkerElement({
                     map,
                     content: buildContent(property),
@@ -291,6 +292,8 @@
         // Add circle overlay and bind to marker
 
         $('#sendbtn').click(function () {
+            
+            filtro = document.getElementById("filter").value;
             console.log("button clicked");
             var rad = get_rad();
             if (!circle || !circle.setRadius) {
