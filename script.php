@@ -24,7 +24,7 @@
             lng: 13.656473896658605
         };
         map = new Map(document.getElementById("map"), {
-            zoom: 19,
+            zoom: 14,
             center,
             mapId: "4504f8b37365c3d0",
         });
@@ -373,5 +373,34 @@ $(document).ready(function() {
         });
     });
 });
+</script>
+
+<script>
+    const increaseButton = document.getElementById('increase');
+    const decreaseButton = document.getElementById('decrease');
+    const rangeInput = document.getElementById('customRange1');
+    const displayValue = document.getElementById('valoreDinamico');
+
+    increaseButton.addEventListener('click', function() {
+        updateRange(0.5);
+    });
+
+    decreaseButton.addEventListener('click', function() {
+        updateRange(-0.5);
+    });
+
+    function updateRange(change) {
+        let currentValue = parseFloat(rangeInput.value);
+        let newValue = currentValue + change;
+        if (newValue >= parseFloat(rangeInput.min) && newValue <= parseFloat(rangeInput.max)) {
+            rangeInput.value = newValue;
+            displayValue.textContent = newValue;
+        }
+    }
+
+    // Update display when user manually changes the range slider
+    rangeInput.addEventListener('input', function() {
+        displayValue.textContent = rangeInput.value;
+    });
 </script>
 

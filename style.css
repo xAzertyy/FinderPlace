@@ -4,7 +4,7 @@
  */
 #map {
 
-  height:54.5vh;
+  height:52vh;
   top: 35vh; 
 
 }
@@ -38,7 +38,8 @@ body {
   text-align: center;
   left: 10%;  /* Distance from left border */
   min-width: 50vh;
-  min-height: 27vh;
+  top: 6rem!important;
+  max-height: 185px;
   width: auto;
   display: block;
 }
@@ -56,7 +57,7 @@ body {
 .right {
   position: absolute;
   right: 10%;  /* Distance from right border */
-  top: 7rem;
+  top: 6rem;
   text-align: center;
   min-width: 50vh;
   min-height: 27vh;

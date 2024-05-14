@@ -20,7 +20,7 @@
 
 
         <div>
-            <div class"left" style="position:absolute; top:7rem;" class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
+            <div class"left" style="position:absolute;" class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
                 <form action="locationFilter">
                     <select class="form-select" id="filter">
                         <option selected>All</option>
@@ -33,9 +33,9 @@
             </div>
 
 
-            <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+            <div style="padding: 0rem!important;" class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded">
 
-                <p style="display: inline;" id="valoreDinamico">20</p>km
+                <p style="display: inline;" id="valoreDinamico">10</p>km
                 <div class="controls">
 
                   
