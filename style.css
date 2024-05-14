@@ -3,8 +3,10 @@
  * that contains the map. 
  */
 #map {
-  height: 43rem;
-  top: 10rem; 
+
+  height:54.5vh;
+  top: 35vh; 
+
 }
 
 /* 
@@ -21,6 +23,7 @@ body {
 
 
 
+
 .leftLogo {
   display: flex;
   margin: 0;
@@ -29,22 +32,36 @@ body {
   align-items: center;
 }
 
+
 .left {
   position: absolute;
-  left: 10%;
-  min-width: 20rem;
+  text-align: center;
+  left: 10%;  /* Distance from left border */
+  min-width: 50vh;
+  min-height: 27vh;
   width: auto;
-  display: block"
+  display: block;
+}
+
+.centered {
+  position: absolute;
+  top: 30%;      /* Position the top edge of the element at the middle of the page */
+  left: 50%;     /* Position the left edge of the element at the center of the page */
+  transform: translate(-50%, -50%); /* Shift the element back by half its width and height */
+  display: block;
 
 }
 
-.right{
+
+.right {
   position: absolute;
-  left: 50vw;
+  right: 10%;  /* Distance from right border */
   top: 7rem;
-  width: 20rem;
+  text-align: center;
+  min-width: 50vh;
+  min-height: 27vh;
   width: auto;
-  display: block"
+  display: block;
 }
 
 
