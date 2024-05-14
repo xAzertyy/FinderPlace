@@ -3,8 +3,8 @@
  * that contains the map. 
  */
 #map {
-  height: 26.5vw;
-  top: 17vw; 
+  height:44.5vh;
+  top: 47vh; 
 }
 
 /* 
@@ -12,10 +12,12 @@
    */
 html,
 body {
-  height: 30%;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
+
+
 
 
 

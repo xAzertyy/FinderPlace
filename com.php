@@ -17,20 +17,26 @@ include_once "navbar.php";
 <style>
     #nav {
         background-color: red !important;
-        
+
 
     }
 
-    #valoreDinamico{
+    #selectedTipo {
+
+        font-size: 64;
+    }
+
+    #valoreDinamico {
         font-size: 78;
-        text-align:center ;
+        text-align: center;
         justify-content: center;
         align-items: center;
     }
 
-    li, ul{
+    li,
+    ul {
 
-        font-weight: bold!important;
+        font-weight: bold !important;
     }
 
     .alert {
@@ -62,5 +68,4 @@ include_once "navbar.php";
         margin: 2rem;
         padding-bottom: 2rem;
     }
-
 </style>

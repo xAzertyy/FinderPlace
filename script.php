@@ -4,7 +4,7 @@
 
     initMap();
 
-    let map, infoWindow;
+    let map, infoWindow, filtro
     let markersList = [];
 
 
@@ -51,8 +51,11 @@
         let properties = markers();
 
         for (const property of properties) {
+            //console.log("filtro " + filtro);
+            //console.log(property.type + " " + typeToIcon(filtro));
+
             //console.log(property.position)
-            if (distanza(property.position.lat, property.position.lng) < get_rad()) {
+            if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All") ) {
                 const ame = new google.maps.marker.AdvancedMarkerElement({
                     map,
                     content: buildContent(property),
@@ -146,21 +149,7 @@
         <div class="price">${property.price}</div>
         <div class="address">${property.address}</div>
         <div class="features">
-        <div>
-            <i aria-hidden="true" class="fa fa-bed fa-lg bed" title="bedroom"></i>
-            <span class="fa-sr-only">bedroom</span>
-            <span>${property.bed}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-bath fa-lg bath" title="bathroom"></i>
-            <span class="fa-sr-only">bathroom</span>
-            <span>${property.bath}</span>
-        </div>
-        <div>
-            <i aria-hidden="true" class="fa fa-ruler fa-lg size" title="size"></i>
-            <span class="fa-sr-only">size</span>
-            <span>${property.size} ft<sup>2</sup></span>
-        </div>
+        
         </div>
     </div>
     `;
@@ -196,8 +185,41 @@
         }
     }
 
-
     ?>
+    
+    function typeToIcon(tipologia)
+    {
+
+
+        switch (tipologia) {
+            case "Choose a place":
+                return true;
+            case "pizzeria":
+                return "pizza-slice";
+            case "cafe":
+                return "mug-hot";
+            case "restaurant":
+                return "utensils";
+            case "bakery":
+                return "bread-slice";
+            case "pastry shop":
+                return "cookie";
+            case "fastfood":
+                return "burger";
+            case "pub":
+                return "beer-mug-empty";
+            default:
+                return "question";
+        }
+    }
+    
+
+
+
+
+
+    
+    
     function markers() {
         <?php
         // Assuming you have a function getdb() that establishes a database connection
@@ -272,7 +294,9 @@
         // Add circle overlay and bind to marker
 
         $('#sendbtn').click(function () {
-            console.log("button clicked");
+            
+            filtro = document.getElementById("filter").value;
+            console.log("button clicked, filter: ", filtro);
             var rad = get_rad();
             if (!circle || !circle.setRadius) {
                 circle = new google.maps.Circle({
@@ -328,4 +352,26 @@ function get_rad() {
 
 
 
+</script>
+
+<script>
+$(document).ready(function() {
+    $('#filter').change(function() {
+        var selectedTipo = $(this).val(); // Get the value of the selected option
+
+        // Perform the AJAX request
+        $.ajax({
+            url: 'tipo_processor.php', // This is the PHP file that processes the data
+            type: 'POST',
+            data: {tipo: selectedTipo},
+            success: function(response) {
+                // Update the div with the response
+                $('#selectedTipo').html(response + "<i class=\"fa fa-icon fa-" + typeToIcon(document.getElementById("filter").value) + "\"><i>");
+            },
+            error: function() {
+                $('#selectedTipo').html('Error retrieving data.');
+            }
+        });
+    });
+});
 </script>
