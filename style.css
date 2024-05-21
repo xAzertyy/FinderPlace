@@ -2,12 +2,15 @@
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
-#map {
-
-  height:52vh;
-  top: 35vh; 
-
+ #map {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform: translateY(-18%);
 }
+
 
 
 html,
@@ -38,20 +41,20 @@ body {
   left: 10%;  /* Distance from left border */
   min-width: 50vh;
   top: 6rem!important;
-  max-height: 185px;
-  width: auto;
   background-color: #8D99AE!important;
-  display: block;
+
 }
 
 .centered {
   position: absolute;
-  top: 30%;      /* Position the top edge of the element at the middle of the page */
-  left: 50%;     /* Position the left edge of the element at the center of the page */
-  transform: translate(-50%, -50%); /* Shift the element back by half its width and height */
-  display: block;
-
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 
 
 .right {
@@ -60,7 +63,8 @@ body {
   top: 6rem;
   text-align: center;
   min-width: 50vh;
-  min-height: 27vh;
+  max-width: 50vh;
+
   width: auto;
   display: block;
 }
@@ -70,6 +74,23 @@ body {
 
 body {
   margin: 0;
+}
+
+
+/* Desktop Styles */
+body.desktop .left,
+body.desktop .right {
+    display: inline-block;
+    vertical-align: top;
+}
+
+body.desktop .left {
+    width: 25%;
+}
+
+body.desktop .right {
+    width: 70%;
+    margin-left: 5%;
 }
 
 
@@ -330,3 +351,45 @@ body {
 .property:not(.highlight):has(.fa-question)::after {
   border-top: 9px solid var(--unknown-color);
 }
+
+
+
+
+
+
+
+  /* Mobile Styles */
+  body.mobile .left,
+  body.mobile .right {
+      width: 100%;
+      position: static;
+      margin-bottom: 20px;
+  }
+  
+  body.mobile .left {
+      padding: 10px;
+  }
+  
+  body.mobile .right {
+      padding: 10px;
+  }
+  
+  body.mobile .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  
+  body.mobile #customRange1 {
+      width: calc(100% - 80px);
+  }
+  
+  body.mobile .centered {
+      text-align: center;
+  }
+  
+  body.mobile #sendbtn {
+      width: 100%;
+      font-size: 1.5rem;
+      padding: 1rem;
+  }

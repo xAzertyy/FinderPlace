@@ -38,11 +38,11 @@ include_once "navbar.php";
 
     #selectedTipo {
 
-        font-size: 54;
+        font-size: 3.375rem;
     }
 
     #valoreDinamico {
-        font-size: 90;
+        font-size: 5.625rem;
         text-align: center;
         justify-content: center;
         align-items: center;
@@ -74,8 +74,9 @@ include_once "navbar.php";
         /* Center vertically */
         transform: translateY(-50%);
         /* Shift up by half its height */
-        font-size: 40;
+        font-size: 2.5rem;
     }
+
 
     li,
     ul {
@@ -117,4 +118,5 @@ include_once "navbar.php";
     body{
         background-color:#F5F5DC;
     }
+
 </style>

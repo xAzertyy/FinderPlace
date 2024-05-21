@@ -4,8 +4,6 @@
     let map, infoWindow, filtro
     let markersList = [];
 
-
-
     async function initMap() {
 
         // Request needed libraries.
@@ -54,6 +52,11 @@
 
             //console.log(property.position)
             if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All")) {
+
+                console.log(property.price);
+                document.getElementById("sidebar").innerHTML=property.price;
+
+
                 const ame = new google.maps.marker.AdvancedMarkerElement({
                     map,
                     content: buildContent(property),
