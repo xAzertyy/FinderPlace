@@ -1,20 +1,16 @@
 <script>
-
-
-
     initMap();
 
     let map, infoWindow, filtro
     let markersList = [];
-
-
 
     async function initMap() {
 
         // Request needed libraries.
 
         const {
-            Map, InfoWindow
+            Map,
+            InfoWindow
         } = await google.maps.importLibrary("maps");
         const {
             AdvancedMarkerElement
@@ -24,7 +20,7 @@
             lng: 13.656473896658605
         };
         map = new Map(document.getElementById("map"), {
-            zoom: 19,
+            zoom: 14,
             center,
             mapId: "4504f8b37365c3d0",
         });
@@ -55,7 +51,12 @@
             //console.log(property.type + " " + typeToIcon(filtro));
 
             //console.log(property.position)
-            if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All") ) {
+            if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All")) {
+
+                console.log(property.price);
+                document.getElementById("sidebar").innerHTML=property.price;
+
+
                 const ame = new google.maps.marker.AdvancedMarkerElement({
                     map,
                     content: buildContent(property),
@@ -71,7 +72,7 @@
         }
     }
 
-    function deleteMarkers(){
+    function deleteMarkers() {
         for (const mk of markersList) {
             mk.setMap(null);
         }
@@ -113,7 +114,10 @@
 
 
                     // Call resolve to indicate successful location retrieval
-                    resolve({ lat: window.myLat, lng: window.myLng });
+                    resolve({
+                        lat: window.myLat,
+                        lng: window.myLng
+                    });
                 },
                 (error) => {
                     // Call reject if there's an error
@@ -186,13 +190,14 @@
     }
 
     ?>
-    
-    function typeToIcon(tipologia)
-    {
+
+    function typeToIcon(tipologia) {
 
 
         switch (tipologia) {
 
+            case "All":
+                return "infinity"
             case "pizzeria":
                 return "pizza-slice";
             case "cafe":
@@ -211,14 +216,14 @@
                 return "question";
         }
     }
-    
 
 
 
 
 
-    
-    
+
+
+
     function markers() {
         <?php
         // Assuming you have a function getdb() that establishes a database connection
@@ -248,18 +253,17 @@
         }
         ?>
         // Initialize an empty array to store marker properties
-    var properties = <?php echo json_encode($properties); ?>;
-        
-    // Return the array of marker properties
-    return properties;
-}
+        var properties = <?php echo json_encode($properties); ?>;
+
+        // Return the array of marker properties
+        return properties;
+    }
 
 
 
-         function distanza(lat, lng)
-        { 
-    
-        
+    function distanza(lat, lng) {
+
+
 
 
         myLat = draggableMarker.position.lat();
@@ -275,15 +279,16 @@
         return d; // returns the distance in meter
 
 
-      
-    } 
 
-    var rad = function (x) {
+    }
+
+    var rad = function(x) {
         return x * Math.PI / 180;
     };
 
 
     document.getElementById('customRange1').addEventListener('input', f);
+
     function f() {
         var a = document.getElementById("customRange1").value;
 
@@ -291,39 +296,35 @@
 
     }
 
-        var circle;
-        // Add circle overlay and bind to marker
+    var circle;
+    // Add circle overlay and bind to marker
 
-        $('#sendbtn').click(function () {
-            
-
-            filtro = document.getElementById("filter").value;   
-
-            console.log("button clicked, filter: ", filtro);
-            var rad = get_rad();
-            if (!circle || !circle.setRadius) {
-                circle = new google.maps.Circle({
-                    map: map,
-                    radius: rad,
-                    fillColor: '#555',
-                    strokeColor: '#ffffff',
-                    strokeWeight: 3,
-                    strokeOpacity: 0.1
-                });
-                circle.bindTo('center', draggableMarker, 'position');
-            } else circle.setRadius(rad);
-            deleteMarkers();
-            printMarkers();
-        });
+    $('#sendbtn').click(function() {
 
 
-function get_rad() {
-    return document.getElementById("customRange1").value * 1000;
-}
+        filtro = document.getElementById("filter").value;
+
+        console.log("button clicked, filter: ", filtro);
+        var rad = get_rad();
+        if (!circle || !circle.setRadius) {
+            circle = new google.maps.Circle({
+                map: map,
+                radius: rad,
+                fillColor: '#555',
+                strokeColor: '#ffffff',
+                strokeWeight: 3,
+                strokeOpacity: 0.1
+            });
+            circle.bindTo('center', draggableMarker, 'position');
+        } else circle.setRadius(rad);
+        deleteMarkers();
+        printMarkers();
+    });
 
 
-
-
+    function get_rad() {
+        return document.getElementById("customRange1").value * 1000;
+    }
 </script>
 
 <script>
@@ -347,31 +348,60 @@ function get_rad() {
                 </div>
             </div>
         </div>"
-            ?>
+        ?>
 
     }
-
 </script>
 
 <script>
-$(document).ready(function() {
-    $('#filter').change(function() {
-        var selectedTipo = $(this).val(); // Get the value of the selected option
+    $(document).ready(function() {
+        $('#filter').change(function() {
+            var selectedTipo = $(this).val(); // Get the value of the selected option
 
-        // Perform the AJAX request
-        $.ajax({
-            url: 'tipo_processor.php', // This is the PHP file that processes the data
-            type: 'POST',
-            data: {tipo: selectedTipo},
-            success: function(response) {
-                // Update the div with the response
-                $('#selectedTipo').html(response + "<i class=\"fa fa-icon fa-" + typeToIcon(document.getElementById("filter").value) + "\"><i>");
-            },
-            error: function() {
-                $('#selectedTipo').html('Error retrieving data.');
-            }
+            // Perform the AJAX request
+            $.ajax({
+                url: 'tipo_processor.php', // This is the PHP file that processes the data
+                type: 'POST',
+                data: {
+                    tipo: selectedTipo
+                },
+                success: function(response) {
+                    // Update the div with the response
+                    $('#selectedTipo').html(response + " <i class=\"fa fa-icon fa-" + typeToIcon(document.getElementById("filter").value) + "\"><i>");
+                },
+                error: function() {
+                    $('#selectedTipo').html('Error retrieving data.');
+                }
+            });
         });
     });
-});
 </script>
 
+<script>
+    const increaseButton = document.getElementById('increase');
+    const decreaseButton = document.getElementById('decrease');
+    const rangeInput = document.getElementById('customRange1');
+    const displayValue = document.getElementById('valoreDinamico');
+
+    increaseButton.addEventListener('click', function() {
+        updateRange(0.5);
+    });
+
+    decreaseButton.addEventListener('click', function() {
+        updateRange(-0.5);
+    });
+
+    function updateRange(change) {
+        let currentValue = parseFloat(rangeInput.value);
+        let newValue = currentValue + change;
+        if (newValue >= parseFloat(rangeInput.min) && newValue <= parseFloat(rangeInput.max)) {
+            rangeInput.value = newValue;
+            displayValue.textContent = newValue;
+        }
+    }
+
+    // Update display when user manually changes the range slider
+    rangeInput.addEventListener('input', function() {
+        displayValue.textContent = rangeInput.value;
+    });
+</script>

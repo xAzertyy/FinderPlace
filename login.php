@@ -28,16 +28,16 @@
         <table align="center">
             <tr>
                 <td>
-                    <form id="login" action="checklogin.php" method="post">
+                    <form style="padding:2vh;" id="login" action="checklogin.php" method="post">
 
-                        <div class="input-group flex-nowrap">
-                            <span class="input-group-text" id="addon-wrapping">Username</span>
+                        <div id="userdiv"class="input-group flex-nowrap">
+                            <span id="userspan" class="input-group-text" id="addon-wrapping">Username</span>
                             <input type="text" class="form-control" placeholder="Inserisci qui l'username"
                                 aria-label="Username" name="username" aria-describedby="addon-wrapping">
                         </div>
 
-                        <div class="input-group flex-nowrap">
-                            <span class="input-group-text" id="addon-wrapping">Password</span>
+                        <div id="passdiv"class="input-group flex-nowrap">
+                            <span id="passspan"class="input-group-text" id="addon-wrapping">Password</span>
                             <input type="password" class="form-control" placeholder="Inserisci la password"
                                 aria-label="Password" name="password" aria-describedby="addon-wrapping">
                         </div>
