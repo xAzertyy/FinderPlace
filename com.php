@@ -15,25 +15,73 @@ include_once "navbar.php";
 
 
 <style>
-    .navbar-toggler, #nav {
-        background-color: red !important;
+    .navbar-toggler,
+    #nav {
+        background-color: #8A9A5B !important;
+    }
+    .right, .left{
+        background-color:#FEFEFE!important;
+
+    }
+
+    #userdiv, #passdiv{
+
+        padding: 1vh;
+       
+    }
+
+    #userspan, #passspan{
+
+        min-width: 15.4vh;
+
     }
 
     #selectedTipo {
 
-        font-size: 64;
+        font-size: 3.375rem;
     }
 
     #valoreDinamico {
-        font-size: 78;
+        font-size: 5.625rem;
         text-align: center;
         justify-content: center;
         align-items: center;
+
+        margin-bottom: 20px;
+        /* Space between km display and control elements */
     }
 
-    li, ul{
+    #customRange1 {
+        left: 35px;
+        /* Adjust based on the size of your '-' button */
+        right: 35px;
+        /* Adjust based on the size of your '+' button */
+        width: auto;
+        /* Allows the slider to fill the space between buttons */
+    }
 
-        font-weight: bold!important;
+    #decrease,
+    #increase {
+        border: none;
+        background: none;
+        cursor: pointer;
+        /* Adjust size as needed */
+        width: 50px;
+        /* Example size increase */
+        height: 50px;
+        /* Example size increase */
+        top: 50%;
+        /* Center vertically */
+        transform: translateY(-50%);
+        /* Shift up by half its height */
+        font-size: 2.5rem;
+    }
+
+
+    li,
+    ul {
+
+        font-weight: bold !important;
 
     }
 
@@ -65,6 +113,10 @@ include_once "navbar.php";
     #tab_div {
         margin: 2rem;
         padding-bottom: 2rem;
+    }
+
+    body{
+        background-color:#F5F5DC;
     }
 
 </style>

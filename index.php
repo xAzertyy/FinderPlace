@@ -1,62 +1,78 @@
 <?php session_start(); ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-
-    <title>Finder place</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finder Place</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body
+    class="<?php echo (preg_match('/Mobile|Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ? 'mobile' : 'desktop'); ?>">
     <?php include_once "com.php";
 
     $conn = getdb();
 
-    $selectTipo = "SELECT tipo FROM tipologia group by tipo";
+    $selectTipo = "SELECT tipo FROM tipologia GROUP BY tipo";
     $resultTipo = mysqli_query($conn, $selectTipo);
     ?>
 
-    <div class="left"><br>
-
-
-        <div>
-            <div style="position:absolute; top:7rem;" class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
-            <form action="locationFilter">
-                <select class="form-select" id="filter">
-                    <option selected>All</option>
-                    <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
-                        echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
-                    } ?>
-                </select>
+    <div><br>
+        <div id="chooseness">
+            <div class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
+                <form action="locationFilter">
+                    <select class="form-select" id="filter">
+                        <option selected>All</option>
+                        <?php while ($row = mysqli_fetch_assoc($resultTipo)) {
+                            echo "<option value='" . htmlspecialchars($row["tipo"]) . "'>" . htmlspecialchars($row["tipo"]) . "</option>";
+                        } ?>
+                    </select>
                 </form>
-                <div id="selectedTipo">All</div>
+                <div id="selectedTipo">All <i class="fa fa-infinity"></i></div>
+            </div>
+
+            <div class="centered">
+            <!-- style="padding: 1rem; font-size: 30px;"  -->
+                <!-- <button  class="btn btn-primary" id="sendbtn">Invia</button>
+                <br>  -->
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Visualizza lista</button>
             </div>
 
 
-            <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded">
 
-                <p style="display: inline;" id="valoreDinamico">20</p>km
-                <div>
-
-                    <label style="position: relative;" class="form-label"></label>
-
-                    <button id="decrease">-</button>
-                    <input style="width: 15rem;" value="10.0" type="range" class="form-range" min="0.5" max="25.0" step="0.5" id="customRange1"><br>
-                    <button id="increase">+</button>
-
+            <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded" style="padding: 0rem !important;">
+                <p style="display: inline;" id="valoreDinamico">10</p>km
+                <div class="controls">
+                    <button id="decrease" style="float: left;">-</button>
+                    <input style="width: 30vh;" value="10.0" type="range" class="form-range" min="0.5" max="25.0"
+                        step="0.5" id="customRange1">
+                    <button id="increase" style="float: right;">+</button>
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="right ">
-        <button class="btn btn-primary" id="sendbtn">Invia</button>
 
+
+
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Lista marker visualizzati</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <p id="sidebar">Try scrolling the rest of the page to see this option in action.</p>
+        </div>
     </div>
+
 
     <div id="map"></div>
 
     <script>
-
         (g => {
             var h, a, k, p = "The Google Maps JavaScript API",
                 c = "google",
@@ -81,19 +97,11 @@
                 }));
             d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n))
         })({
-
             key: "AIzaSyCz5IMpbFzjKdjQIvsjwILT6KLggb7NLK8",
             v: "weekly",
-            // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-            // Add other bootstrap parameters as needed, using camel case.
         });
     </script>
-
-
 </body>
-<?php
-include_once "script.php";
-?>
-
+<?php include_once "script.php"; ?>
 
 </html>
