@@ -1,11 +1,16 @@
 <script>
     initMap();
+    
+    var triggerRaggio = $('#valoreDinamico');
+    var triggerFilter = $('#filter');
 
     let map, infoWindow, filtro
     let markersList = [];
 
+    
     async function initMap() {
 
+        
         // Request needed libraries.
 
         const {
@@ -36,7 +41,10 @@
 
         deleteMarkers();
         printMarkers();
-
+        map.addListener('idle', function() {
+            triggerRaggio.trigger("change");
+            triggerFilter.trigger("change");
+        });
 
     }
 
@@ -53,7 +61,7 @@
             //console.log(property.position)
             if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All")) {
 
-                console.log(property.price);
+                //console.log(property.price);
 
                 document.getElementById("sidebar").innerHTML = document.getElementById("sidebar").innerHTML + property.price + "<br>";
 
@@ -255,14 +263,14 @@
         }
         ?>
         // Initialize an empty array to store marker properties
-        var properties = <?php echo json_encode($properties); ?>;
+var properties = <?php echo json_encode($properties); ?>;
 
         // Return the array of marker properties
-        return properties;
+       return properties;
     }
 
-
-
+ 
+   
     function distanza(lat, lng) {
 
 
@@ -272,7 +280,7 @@
         myLng = draggableMarker.position.lng();
 
 
-        var earthRadiusMeter = 6378137; // Earth’s mean radius in meter
+       var earthRadiusMeter = 6378137; // Earth’s mean radius in meter
         var distanceLat = rad(myLat - lat);
         var distanceLng = rad(myLng - lng);
         var a = Math.sin(distanceLat / 2) * Math.sin(distanceLat / 2) + Math.cos(rad(lat)) * Math.cos(rad(myLat)) * Math.sin(distanceLng / 2) * Math.sin(distanceLng / 2);
@@ -294,19 +302,27 @@
     function f() {
         var a = document.getElementById("customRange1").value;
 
-        document.getElementById("valoreDinamico").innerHTML = a;
+         document.getElementById("valoreDinamico").value = a;
 
     }
 
     var circle;
      // Add circle overlay and bind to marker
 
-    $('#sendbtn').click(function() {
-
+     $('#filter').change(function() {
  
         filtro = document.getElementById("filter").value;
 
         console.log("button clicked, filter: ", filtro);
+        
+        deleteMarkers();
+         printMarkers();
+     });
+
+
+
+     $('#valoreDinamico').change(function() {
+        console.log("valore cambiato!");
         var rad = get_rad();
         if (!circle || !circle.setRadius) {
             circle = new google.maps.Circle({
@@ -316,12 +332,16 @@
                 strokeColor: '#ffffff',
                 strokeWeight: 3,
                 strokeOpacity: 0.1
-            });
+             });
              circle.bindTo('center', draggableMarker, 'position');
         } else circle.setRadius(rad);
-        deleteMarkers();
-        printMarkers();
-     });
+
+    });
+ 
+    $('#customRange1').change(function() {
+        triggerRaggio.trigger('change');
+        triggerFilter.trigger('change');
+    });
 
 
     function get_rad() {
@@ -357,7 +377,9 @@
 
 <script>
     $(document).ready(function() {
+
         $('#filter').change(function() {
+            triggerRaggio.trigger('change');
             var selectedTipo = $(this).val(); // Get the value of the selected option
 
             // Perform the AJAX request
@@ -377,13 +399,32 @@
             });
         });
     });
+
+  
+
+
+
+
+
+
+
 </script>
+
+
+
+
+
+
+
+
+
+
 
 <script>
     const increaseButton = document.getElementById('increase');
     const decreaseButton = document.getElementById('decrease');
     const rangeInput = document.getElementById('customRange1');
-    const displayValue = document.getElementById('valoreDinamico');
+    const displayValue = document.getElementById('valoreDinamico').value;
 
     increaseButton.addEventListener('click', function() {
         updateRange(0.5);
@@ -398,12 +439,12 @@
         let newValue = currentValue + change;
         if (newValue >= parseFloat(rangeInput.min) && newValue <= parseFloat(rangeInput.max)) {
             rangeInput.value = newValue;
-            displayValue.textContent = newValue;
+            displayValue = newValue;
         }
     }
 
     // Update display when user manually changes the range slider
     rangeInput.addEventListener('input', function() {
-        displayValue.textContent = rangeInput.value;
+        displayValue = rangeInput.value;
     });
 </script>

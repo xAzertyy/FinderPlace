@@ -34,9 +34,6 @@
             </div>
 
             <div class="centered">
-            <!-- style="padding: 1rem; font-size: 30px;"  -->
-                <!-- <button  class="btn btn-primary" id="sendbtn">Invia</button>
-                <br>  -->
                 <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Visualizza lista</button>
             </div>
@@ -44,7 +41,11 @@
 
 
             <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded" style="padding: 0rem !important;">
-                <p style="display: inline;" id="valoreDinamico">10</p>km
+
+                <input disabled type="text" id="valoreDinamico" value="10" >km
+                <!-- <div style="display: inline;" id="valoreDinamico">10</div>km -->
+
+
                 <div class="controls">
                     <button id="decrease" style="float: left;">-</button>
                     <input style="width: 30vh;" value="10.0" type="range" class="form-range" min="0.5" max="25.0"

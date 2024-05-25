@@ -4,13 +4,22 @@
  */
 #map {
   position: fixed;
-  top: 20%;
+  top: 17%;
   left: 0;
   width: 100%;
-  height: -webkit-fill-available;
+  height: 63.4vh;
   transform: translateY(-18%);
 }
 
+
+#valoreDinamico {
+  background-color: rgb(255, 255, 255);
+  font-size: 1rem;
+  border: 0;
+  font-size: 4rem;
+  width: auto;
+  max-width: 20vw;
+}
 
 
 html,
@@ -20,10 +29,6 @@ body {
   padding: 0;
 
 }
-
-
-
-
 
 
 .leftLogo {
@@ -39,7 +44,7 @@ body {
   text-align: center;
   /* Distance from left border */
   min-width: 21vw;
-  max-width: 22vw;
+  max-width: 25vw;
   top: 6rem !important;
   background-color: #8D99AE !important;
   margin-top: 4vh;
@@ -55,7 +60,7 @@ body {
   text-align: center;
   min-width: 21vw;
 
-  max-width: 22vw;
+  max-width: 25vw;
   margin-top: 4vh;
   margin-left: 0;
   width: auto;
@@ -396,6 +401,9 @@ body.mobile #sendbtn {
 
 
 @media only screen and (max-width: 800px) {
+  #valoreDinamico {
+    max-width: 90vw;
+  }
 
   #selectedTipo {
     min-width: 29vw;
