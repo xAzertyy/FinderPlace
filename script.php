@@ -454,4 +454,10 @@ var properties = <?php echo json_encode($properties); ?>;
     rangeInput.addEventListener('input', function() {
         displayValue = rangeInput.value;
     });
+
+
+
+
+
+    
 </script>
