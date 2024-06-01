@@ -41,8 +41,9 @@
 
         deleteMarkers();
         printMarkers();
+
+
         map.addListener('idle', function() {
-            triggerRaggio.trigger("change");
             triggerFilter.trigger("change");
         });
 
@@ -117,8 +118,10 @@
                         const position = draggableMarker.position;
                         infoWindow.close();
                         infoWindow.setContent(`Pin dropped at: ${draggableMarker.position.lat()}, ${draggableMarker.position.lng()}`);
-                        <?php $myLat = "</script><script>document.write(draggableMarker.position.lat())</script><script>"; ?>
                         infoWindow.open(draggableMarker.map, draggableMarker);
+                        triggerRaggio.trigger("change");
+                        triggerFilter.trigger("change");
+
                     });
 
 
@@ -302,7 +305,7 @@ var properties = <?php echo json_encode($properties); ?>;
     function f() {
         var a = document.getElementById("customRange1").value;
 
-         document.getElementById("valoreDinamico").value = a;
+         document.getElementById("valoreDinamico").innerHTML = a;
 
     }
 
@@ -316,7 +319,7 @@ var properties = <?php echo json_encode($properties); ?>;
         console.log("button clicked, filter: ", filtro);
         
         deleteMarkers();
-         printMarkers();
+        printMarkers();
      });
 
 
@@ -335,7 +338,7 @@ var properties = <?php echo json_encode($properties); ?>;
              });
              circle.bindTo('center', draggableMarker, 'position');
         } else circle.setRadius(rad);
-
+        
     });
  
     $('#customRange1').change(function() {
@@ -424,7 +427,7 @@ var properties = <?php echo json_encode($properties); ?>;
     const increaseButton = document.getElementById('increase');
     const decreaseButton = document.getElementById('decrease');
     const rangeInput = document.getElementById('customRange1');
-    const displayValue = document.getElementById('valoreDinamico').value;
+    let displayValue = document.getElementById('valoreDinamico').innerHTML;
 
     increaseButton.addEventListener('click', function() {
         updateRange(0.5);
@@ -435,12 +438,16 @@ var properties = <?php echo json_encode($properties); ?>;
     });
 
     function updateRange(change) {
+        console.log("funzione update range");
         let currentValue = parseFloat(rangeInput.value);
         let newValue = currentValue + change;
         if (newValue >= parseFloat(rangeInput.min) && newValue <= parseFloat(rangeInput.max)) {
             rangeInput.value = newValue;
-            displayValue = newValue;
+            triggerRaggio.trigger("change");
         }
+        f();
+        triggerFilter.trigger("change");
+
     }
 
     // Update display when user manually changes the range slider

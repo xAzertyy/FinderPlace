@@ -11,6 +11,9 @@
   transform: translateY(-18%);
 }
 
+.mb-5 {
+  margin-bottom: 4vh;
+}
 
 #valoreDinamico {
   background-color: rgb(255, 255, 255);

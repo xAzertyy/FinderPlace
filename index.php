@@ -42,8 +42,8 @@
 
             <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded" style="padding: 0rem !important;">
 
-                <input disabled type="text" id="valoreDinamico" value="10" >km
-                <!-- <div style="display: inline;" id="valoreDinamico">10</div>km -->
+                <!-- <input disabled type="text" id="valoreDinamico" value="10" >km -->
+                <div style="display: inline;" id="valoreDinamico">10</div>km 
 
 
                 <div class="controls">
