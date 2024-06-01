@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2024 at 04:50 PM
+-- Generation Time: Jun 01, 2024 at 03:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,7 +78,7 @@ INSERT INTO `locations` (`id_pos`, `nome`, `tipologia`, `descrizione`, `lat`, `l
 --
 
 CREATE TABLE `login` (
-  `id_admnin` int(255) NOT NULL,
+  `id_admin` int(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -87,8 +87,8 @@ CREATE TABLE `login` (
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`id_admnin`, `username`, `password`) VALUES
-(0, 'admin', 'admin');
+INSERT INTO `login` (`id_admin`, `username`, `password`) VALUES
+(0, 'admin', '21232f297a57a5a743894a0e4a801fc3');
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,7 @@ ALTER TABLE `locations`
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
-  ADD PRIMARY KEY (`id_admnin`);
+  ADD PRIMARY KEY (`id_admin`);
 
 --
 -- Indexes for table `tipologia`
