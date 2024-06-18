@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finder Place</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="<?php echo (preg_match('/Mobile|Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ? 'mobile' : 'desktop'); ?>">
+<body
+    class="<?php echo (preg_match('/Mobile|Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ? 'mobile' : 'desktop'); ?>">
     <?php include_once "com.php";
 
     $conn = getdb();
@@ -19,7 +20,7 @@
     ?>
 
     <div><br>
-        <div>
+        <div id="chooseness">
             <div class="left shadow-lg p-3 mb-5 bg-body-tertiary rounded"><br>
                 <form action="locationFilter">
                     <select class="form-select" id="filter">
@@ -32,27 +33,36 @@
                 <div id="selectedTipo">All <i class="fa fa-infinity"></i></div>
             </div>
 
+            <div class="centered">
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Visualizza lista</button>
+            </div>
+
+
+
             <div class="right shadow-lg p-3 mb-5 bg-body-tertiary rounded" style="padding: 0rem !important;">
-                <p style="display: inline;" id="valoreDinamico">10</p>km
+
+                <!-- <input disabled type="text" id="valoreDinamico" value="10" >km -->
+                <div style="display: inline;" id="valoreDinamico">10</div>km 
+
+
                 <div class="controls">
                     <button id="decrease" style="float: left;">-</button>
-                    <input style="width: 30vh;" value="10.0" type="range" class="form-range" min="0.5" max="25.0" step="0.5" id="customRange1">
+                    <input style="width: 30vh;" value="10.0" type="range" class="form-range" min="0.5" max="25.0"
+                        step="0.5" id="customRange1">
                     <button id="increase" style="float: right;">+</button>
                 </div>
             </div>
+
         </div>
     </div>
-    <div class="centered">
-        <button style="padding: 1rem; font-size: 30px;" class="btn btn-primary" id="sendbtn">Invia</button>
-        <br> 
-        <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Visualizza lista</button>
-    </div>
 
 
 
-    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Offcanvas with body scrolling</h5>
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Lista marker visualizzati</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">

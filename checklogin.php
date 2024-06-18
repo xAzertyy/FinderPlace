@@ -16,35 +16,40 @@ $password = stripcslashes($password);
 $conn = getdb();
 $username = $conn->real_escape_string($username);
 $password = $conn->real_escape_string($password);
+$password = md5($password);
+$query = "SELECT * FROM login WHERE username = ? and password = ?";
+$stmt = $conn->prepare($query);
 
-$query = "SELECT * FROM login WHERE username = '$username'";
+$stmt->bind_param("ss", $username, $password);
 
-$result= $conn->query($query);
-$row = $result->fetch_assoc();
-$passDB = $row['password'];
 
-if($passDB == $password){
-	session_start();
+if ($stmt->execute()) {
+	$result = $stmt->get_result();
+	$row = $result->fetch_array(MYSQLI_ASSOC);
+
+
+
 	
-	$_SESSION['username'] = $username;
-	$_SESSION['password'] = $password;
+	if ($row) {
+		echo "User found on the database!";
+		$userDB = $row['username'];
+		$passDB = $row['password'];
+
+		$_SESSION['username'] = $userDB;
+		$_SESSION['password'] = $passDB;
+		echo "<br>passInserita è " . $password;
+		echo "<br>passdb è  " . $passDB;
+		header("Location: index.php");
+	} else {
+		echo "Identificazione non riuscita: email o password errate<br>";
+		echo "Torna alla pagina di <a href=\"login.php\">Login</a>";
+	}
+} else {
+	echo "Failed to execute query: " . $conn->error;
 }
 
-echo $row['username'];
-echo $row['password'];
-echo $password;
-echo $passDB;
 
-if(isset($_SESSION['password']))
-	
 
-	
-	if($passDB == $password){
-		
-		header("Location: index.php");
-	}
-	
-	echo "Identificazione non riuscita: email o password errate<br>";
-	echo "Torna alla pagina di <a href=\"login.php\">Login</a>";
+
 
 ?>

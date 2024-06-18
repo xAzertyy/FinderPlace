@@ -7,19 +7,29 @@ $conn = getdb();
 
 function updateRecord($conn)
 {
-    if (isset($_POST['id_pos'], $_POST['nome'], $_POST['lat'], $_POST['lon'], $_POST['tipologia'])) {
-        $id = $_POST['id_pos'];
+    if (isset($_POST['id'], $_POST['nome'], $_POST['lat'], $_POST['lon'], $_POST['tipo'])) {
+        $id = $_POST['id'];
         $Nome = $_POST['nome'];
         $lat = $_POST['lat'];
         $lon = $_POST['lon'];
-        $Tipologia = $_POST['tipologia'];
+        $tipo = $_POST['tipo'];
 
-        $sql = "UPDATE locations SET nome = ?, lat = ?, lon = ?, tipologia = ? WHERE id_pos = ?";
+
+
+
+        echo "sto stampoando tipo \n" . $_POST['tipo'];
+        // $sql = "UPDATE locations SET nome = ?, lat = ?, lon = ?, tipo = ? WHERE id = ?";
+        // $sql = "SELECT nome, lat, lon, tipologia.tipo locations.tipo as loctipo FROM locations LEFT JOIN tipologia ON locations.tipo = tipologia.id";
+
+        $sql = "UPDATE locations SET nome = ?, lat = ?, lon = ?, tipo = (SELECT tipologia.id FROM tipologia WHERE tipo = ?) WHERE locations.id = ?;";
+
+
+
         $stmt = $conn->prepare($sql);
         if ($stmt === false) {
             die('MySQL prepare error: ' . $conn->error);
         }
-        $stmt->bind_param("sddsi", $Nome, $lat, $lon, $Tipologia, $id);
+        $stmt->bind_param("sddsi", $Nome, $lat, $lon, $tipo, $id);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
@@ -34,7 +44,7 @@ function updateRecord($conn)
 
 function displayForm($conn, $id)
 {
-    $sql = "SELECT * FROM locations WHERE id_pos = ?";
+    $sql = "SELECT * FROM locations WHERE id = ?";
     $stmt = $conn->prepare($sql);
     if ($stmt === false) {
         die('MySQL prepare error: ' . $conn->error);
@@ -44,7 +54,7 @@ function displayForm($conn, $id)
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
-    $sqlTipo = "SELECT DISTINCT tipo FROM tipologia";
+    $sqlTipo = "SELECT DISTINCT tipo, id FROM tipologia";
     $resultTipo = mysqli_query($conn, $sqlTipo);
 
     if ($row) {
@@ -53,7 +63,7 @@ function displayForm($conn, $id)
         <tr>
             <td>
         <form id=\"upt\" action='' method='post'>
-            <input type='hidden' name='id_pos' value='" . htmlspecialchars($row['id_pos']) . "'>
+            <input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>
 
             <div class=\"input-group flex-nowrap\">
             <span class=\"input-group-text\" id=\"addon-wrapping\">Nome attività</span>
@@ -69,8 +79,8 @@ function displayForm($conn, $id)
             </div>
 
             <div class='input-group flex-nowrap'>
-                <span class='input-group-text' id='addon-wrapping'>Tipologia</span>
-                <select name='tipologia' class='form-select' aria-label='Default select example'>";
+                <span class='input-group-text' id='addon-wrapping'>tipo</span>
+                <select id='tipo' name='tipo' class='form-select' aria-label='Default select example'>";
         while ($TipoRow = mysqli_fetch_assoc($resultTipo)) {
             echo "<option value='" . htmlspecialchars($TipoRow["tipo"]) . "'>" . htmlspecialchars($TipoRow["tipo"]) . "</option>";
         }

@@ -79,14 +79,30 @@ $resultTipo = mysqli_query($conn, $selectTipo);
 
     if (isset($_POST['submit'])) {
         $Nome = $_POST['Nome'];
-        $lat = $_POST['lat'];
-        $lon = $_POST['lon'];
+        $lat = (double)$_POST['lat'];
+        $lon = (double)$_POST['lon'];
         $desc = $_POST['descrizione'];
         $tipologia = $_POST['tipologia'];
 
         if ($Nome && $tipologia) {
-            $insertDati = "INSERT INTO locations (nome, lat, lon, descrizione, tipologia) VALUES ('$Nome', '$lat', '$lon', '$desc', '$tipologia')";
-            if ($conn->query($insertDati)) {
+            $stmt = $conn->prepare("SELECT id FROM tipologia WHERE tipo = ?");
+
+            // Bind the parameter
+            $stmt->bind_param("s", $tipologia);
+            
+            // Execute the statement
+            $stmt->execute();
+            $id_tipo = $stmt->get_result();
+            $stmt->close();
+
+
+            $insertDati = "INSERT INTO locations (nome, lat, lon, tipo) VALUES (?, ?, ?, (SELECT id FROM tipologia WHERE tipo = ?));";
+            $stmt = $conn->prepare($insertDati);
+            $stmt->bind_param("sdds", $Nome, $lat, $lon, $tipologia);
+
+            $stmt->execute();  // No need to convert the result to a float
+
+            if ($stmt->affected_rows > 0) {
 
                 ?>
                 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">

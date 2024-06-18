@@ -4,7 +4,7 @@ require_once("config.php");
 
 $conn = getdb();
 
-$query = "delete from locations where id_pos = ?";
+$query = "delete from locations where id = ?";
 $stmt = $conn->prepare($query);
 
 $stmt->bind_param("i", $_GET['id']);

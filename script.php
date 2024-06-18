@@ -1,11 +1,16 @@
 <script>
     initMap();
+    
+    var triggerRaggio = $('#valoreDinamico');
+    var triggerFilter = $('#filter');
 
     let map, infoWindow, filtro
     let markersList = [];
 
+    
     async function initMap() {
 
+        
         // Request needed libraries.
 
         const {
@@ -38,6 +43,10 @@
         printMarkers();
 
 
+        map.addListener('idle', function() {
+            triggerFilter.trigger("change");
+        });
+
     }
 
     function printMarkers() {
@@ -45,7 +54,7 @@
         markersList = [];
 
         let properties = markers();
-
+        document.getElementById("sidebar").innerHTML = "";
         for (const property of properties) {
             //console.log("filtro " + filtro);
             //console.log(property.type + " " + typeToIcon(filtro));
@@ -53,8 +62,10 @@
             //console.log(property.position)
             if (distanza(property.position.lat, property.position.lng) < get_rad() && (property.type == typeToIcon(filtro) || filtro == "All")) {
 
-                console.log(property.price);
-                document.getElementById("sidebar").innerHTML=property.price;
+                //console.log(property.price);
+
+                document.getElementById("sidebar").innerHTML = document.getElementById("sidebar").innerHTML + property.price + "<br>";
+
 
 
                 const ame = new google.maps.marker.AdvancedMarkerElement({
@@ -107,8 +118,10 @@
                         const position = draggableMarker.position;
                         infoWindow.close();
                         infoWindow.setContent(`Pin dropped at: ${draggableMarker.position.lat()}, ${draggableMarker.position.lng()}`);
-                        <?php $myLat = "</script><script>document.write(draggableMarker.position.lat())</script><script>"; ?>
                         infoWindow.open(draggableMarker.map, draggableMarker);
+                        triggerRaggio.trigger("change");
+                        triggerFilter.trigger("change");
+
                     });
 
 
@@ -228,7 +241,7 @@
         <?php
         // Assuming you have a function getdb() that establishes a database connection
         $conn = getdb();
-        $query = "SELECT * FROM locations";
+        $query = "SELECT descrizione, nome, tipologia.tipo, lat, lon FROM locations LEFT JOIN tipologia ON locations.tipo = tipologia.id";
         $result = mysqli_query($conn, $query);
 
         // Create an empty array to store marker properties
@@ -241,7 +254,7 @@
                 'address' => $row['descrizione'],
                 'description' => 'description',
                 'price' => $row['nome'],
-                'type' => checkType($row['tipologia']),
+                'type' => checkType($row['tipo']),
                 'bed' => 1,
                 'bath' => 1,
                 'size' => 1,
@@ -251,16 +264,16 @@
                 )
             );
         }
-        ?>
+        ?>console.log("ci sto provando");
         // Initialize an empty array to store marker properties
-        var properties = <?php echo json_encode($properties); ?>;
+var properties = <?php echo json_encode($properties); ?>;
 
         // Return the array of marker properties
-        return properties;
+       return properties;
     }
 
-
-
+ 
+   
     function distanza(lat, lng) {
 
 
@@ -270,7 +283,7 @@
         myLng = draggableMarker.position.lng();
 
 
-        var earthRadiusMeter = 6378137; // Earth’s mean radius in meter
+       var earthRadiusMeter = 6378137; // Earth’s mean radius in meter
         var distanceLat = rad(myLat - lat);
         var distanceLng = rad(myLng - lng);
         var a = Math.sin(distanceLat / 2) * Math.sin(distanceLat / 2) + Math.cos(rad(lat)) * Math.cos(rad(myLat)) * Math.sin(distanceLng / 2) * Math.sin(distanceLng / 2);
@@ -286,25 +299,33 @@
         return x * Math.PI / 180;
     };
 
-
-    document.getElementById('customRange1').addEventListener('input', f);
+ 
+     document.getElementById('customRange1').addEventListener('input', f);
 
     function f() {
         var a = document.getElementById("customRange1").value;
 
-        document.getElementById("valoreDinamico").innerHTML = a;
+         document.getElementById("valoreDinamico").innerHTML = a;
 
     }
 
     var circle;
-    // Add circle overlay and bind to marker
+     // Add circle overlay and bind to marker
 
-    $('#sendbtn').click(function() {
-
-
+     $('#filter').change(function() {
+ 
         filtro = document.getElementById("filter").value;
 
         console.log("button clicked, filter: ", filtro);
+        
+        deleteMarkers();
+        printMarkers();
+     });
+
+
+
+     $('#valoreDinamico').change(function() {
+        console.log("valore cambiato!");
         var rad = get_rad();
         if (!circle || !circle.setRadius) {
             circle = new google.maps.Circle({
@@ -314,11 +335,15 @@
                 strokeColor: '#ffffff',
                 strokeWeight: 3,
                 strokeOpacity: 0.1
-            });
-            circle.bindTo('center', draggableMarker, 'position');
+             });
+             circle.bindTo('center', draggableMarker, 'position');
         } else circle.setRadius(rad);
-        deleteMarkers();
-        printMarkers();
+        
+    });
+ 
+    $('#customRange1').change(function() {
+        triggerRaggio.trigger('change');
+        triggerFilter.trigger('change');
     });
 
 
@@ -348,14 +373,17 @@
                 </div>
             </div>
         </div>"
-        ?>
+            ?>
 
     }
 </script>
 
+
 <script>
     $(document).ready(function() {
+
         $('#filter').change(function() {
+            triggerRaggio.trigger('change');
             var selectedTipo = $(this).val(); // Get the value of the selected option
 
             // Perform the AJAX request
@@ -375,13 +403,12 @@
             });
         });
     });
-</script>
 
-<script>
+  
     const increaseButton = document.getElementById('increase');
     const decreaseButton = document.getElementById('decrease');
     const rangeInput = document.getElementById('customRange1');
-    const displayValue = document.getElementById('valoreDinamico');
+    let displayValue = document.getElementById('valoreDinamico').innerHTML;
 
     increaseButton.addEventListener('click', function() {
         updateRange(0.5);
@@ -392,16 +419,26 @@
     });
 
     function updateRange(change) {
+        console.log("funzione update range");
         let currentValue = parseFloat(rangeInput.value);
         let newValue = currentValue + change;
         if (newValue >= parseFloat(rangeInput.min) && newValue <= parseFloat(rangeInput.max)) {
             rangeInput.value = newValue;
-            displayValue.textContent = newValue;
+            triggerRaggio.trigger("change");
         }
+        f();
+        triggerFilter.trigger("change");
+
     }
 
     // Update display when user manually changes the range slider
     rangeInput.addEventListener('input', function() {
-        displayValue.textContent = rangeInput.value;
+        displayValue = rangeInput.value;
     });
+
+
+
+
+
+    
 </script>

@@ -34,21 +34,23 @@ if(!isset($_SESSION['password'])){
             <tbody>
                 <?php
                 $conn = getdb();
-                $sql = "SELECT id_pos, nome, tipologia, descrizione, lat, lon FROM locations";
+                $sql = "SELECT locations.id, nome, tipologia.tipo, descrizione, lat, lon FROM locations LEFT JOIN tipologia ON locations.tipo = tipologia.id";
+               // $query = "SELECT descrizione, nome, tipologia.tipo, lat, lon FROM locations LEFT JOIN tipologia ON locations.tipo = tipologia.id";
+
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>
-                        <th scope='row'>" . $row["id_pos"] . "</th>
+                        <th scope='row'>" . $row["id"] . "</th>
                         <td>" . $row["nome"] . "</td>
-                        <td>" . $row["tipologia"] . "</td>
+                        <td>" . $row["tipo"] . "</td>
                         <td>" . $row["descrizione"] . "</td>
                         <td>" . $row["lat"] . "</td>
                         <td>" . $row["lon"] . "</td>
                         <td>
-                            <a href='update_crud.php?id=" . $row["id_pos"] . "' class='btn btn-primary'>Update</a>
-                            <a href=\"#\" class='btn btn-danger' onclick='mod(" . $row["id_pos"] . "); return false;'>Delete</a>
+                            <a href='update_crud.php?id=" . $row["id"] . "' class='btn btn-primary'>Update</a>
+                            <a href=\"#\" class='btn btn-danger' onclick='mod(" . $row["id"] . "); return false;'>Delete</a>
 
                         </td>
                       </tr>";
