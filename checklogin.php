@@ -2,7 +2,7 @@
 require_once 'config.php';
 session_start();
 
-$username = ($_POST["username"]);
+$username = $_POST["username"];
 $password = $_POST["password"];
 
 // Protezione per SQL Injection
@@ -12,30 +12,30 @@ $password = stripcslashes($password);
 $conn = getdb();
 $username = $conn->real_escape_string($username);
 $password = $conn->real_escape_string($password);
-$password = md5($password);
-$query = "SELECT * FROM login WHERE username = ? and password = ?";
+$query = "SELECT * FROM login WHERE username = ?";
 $stmt = $conn->prepare($query);
 
-$stmt->bind_param("ss", $username, $password);
+$stmt->bind_param("s", $username);
 
 if ($stmt->execute()) {
     $result = $stmt->get_result();
-    $row = $result->fetch_array(MYSQLI_ASSOC);
 
-    if ($row) {
-        echo "User found on the database!";
-        $userDB = $row['username'];
-        $passDB = $row['password'];
-        $_SESSION['username'] = $userDB;
-        $_SESSION['password'] = $passDB;
-        echo "<br>passInserita è " . $password;
-        echo "<br>passdb è  " . $passDB;
-        header("Location: index.php");
-    } else {
-        // Set a session variable to display the error message
-        $_SESSION['error'] = "<h3 style= text-align:center;>Identificazione non riuscita: email o password errate<h3>";
-        header("Location: login.php");
+    while ($row = $result->fetch_assoc()) {
+
+        if (password_verify($password, $row["password"])) {
+
+            // echo "Utente trovato!";
+            $_SESSION['username'] = $row["username"];
+            $_SESSION['password'] = $row["password"];
+            header("Location: index.php");
+            exit;
+        }
+
     }
+
+    $_SESSION['error'] = "<h3 style= text-align:center;>Identificazione non riuscita: email o password errate<h3>";
+    header("Location: login.php");
+
 } else {
     echo "Failed to execute query: " . $conn->error;
 }

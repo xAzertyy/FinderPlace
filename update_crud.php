@@ -59,7 +59,17 @@ function displayForm($conn, $id)
 
     if ($row) {
         echo
-            "<table align=\"center\">
+            "
+        <head>
+            <meta charset=\"UTF-8\">
+            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+            <title>Finder Place</title>
+            <link rel=\"stylesheet\" href=\"style.css\">
+        </head>
+        
+        
+        <div style=\"padding-left:2vh;\" class=\"shadow-lg p-3 mb-5 bg-body-tertiary rounded\">
+            <table align=\"center\">
         <tr>
             <td>
         <form id=\"upt\" action='' method='post'>
@@ -95,7 +105,8 @@ function displayForm($conn, $id)
           </form>
           </td>
           </tr>
-      </table>";
+      </table>
+      </div>";
     } else {
         echo "No record found.";
     }
