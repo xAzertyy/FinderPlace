@@ -1,9 +1,7 @@
 <?php 
-
 session_start();
 require_once "com.php"; 
 if(!isset($_SESSION['password'])){
-
     header("Location: login.php");
 }
 ?>
@@ -14,11 +12,40 @@ if(!isset($_SESSION['password'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List of Markers</title>
-    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @media (max-width: 810px) {
+            .table thead {
+                display: none;
+            }
+            .table, .table tbody, .table tr, .table td {
+                display: block;
+                width: 100%;
+            }
+            .table tr {
+                margin-bottom: 1rem;
+                border-bottom: 1px solid #dee2e6;
+            }
+            .table td {
+                text-align: right;
+                 padding-left: 39%; 
+                position: relative;
+            }
+            .table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 1rem;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
+    </style>
 </head>
 <body>
     <h2>List of markers</h2>
-    <div id="tab_div">
+    <div id="tab_div" class="table-responsive">
         <table id="tab" class="table table-striped align-middle">
             <thead class="table-dark">
                 <tr>
@@ -35,23 +62,20 @@ if(!isset($_SESSION['password'])){
                 <?php
                 $conn = getdb();
                 $sql = "SELECT locations.id, nome, tipologia.tipo, descrizione, lat, lon FROM locations LEFT JOIN tipologia ON locations.tipo = tipologia.id";
-               // $query = "SELECT descrizione, nome, tipologia.tipo, lat, lon FROM locations LEFT JOIN tipologia ON locations.tipo = tipologia.id";
-
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>
-                        <th scope='row'>" . $row["id"] . "</th>
-                        <td>" . $row["nome"] . "</td>
-                        <td>" . $row["tipo"] . "</td>
-                        <td>" . $row["descrizione"] . "</td>
-                        <td>" . $row["lat"] . "</td>
-                        <td>" . $row["lon"] . "</td>
-                        <td>
+                        <td data-label='ID'>" . $row["id"] . "</td>
+                        <td data-label='Name'>" . $row["nome"] . "</td>
+                        <td data-label='Type'>" . $row["tipo"] . "</td>
+                        <td data-label='Description'>" . $row["descrizione"] . "</td>
+                        <td data-label='Latitude'>" . $row["lat"] . "</td>
+                        <td data-label='Longitude'>" . $row["lon"] . "</td>
+                        <td data-label='Actions'>
                             <a href='update_crud.php?id=" . $row["id"] . "' class='btn btn-primary'>Update</a>
                             <a href=\"#\" class='btn btn-danger' onclick='mod(" . $row["id"] . "); return false;'>Delete</a>
-
                         </td>
                       </tr>";
                     }
@@ -82,23 +106,19 @@ if(!isset($_SESSION['password'])){
         </div>
     </div>
 
-   
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
         var currentId = 0; // Variable to store the current ID
 
-     
-    function mod(id) {
-        currentId = id; // Set the current ID to be used in the confirmDelete function
-        var myModal = new bootstrap.Modal(document.getElementById('modal'));
-        myModal.show();
-    }
+        function mod(id) {
+            currentId = id; // Set the current ID to be used in the confirmDelete function
+            var myModal = new bootstrap.Modal(document.getElementById('modal'));
+            myModal.show();
+        }
 
-    function confirmDelete() {
-        window.location.href = 'delete.php?id=' + currentId; // Redirect to delete PHP script with the current ID
-    }
-</script>
-
+        function confirmDelete() {
+            window.location.href = 'delete.php?id=' + currentId; // Redirect to delete PHP script with the current ID
+        }
     </script>
 </body>
 </html>

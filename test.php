@@ -42,9 +42,9 @@ $resultTipo = mysqli_query($conn, $selectTipo);
 
                         <div style="padding:2vh;" class="input-group">
                             <span class="input-group-text"><b>Latitudine</b></span>
-                            <input style="min-width: 30vw" type="text" name="lat" class="form-control" placeholder="inserisci latitudine" aria-describedby="addon-wrapping"><br>
+                            <input style="min-width: 30vw" type="text" name="lat" class="form-control" placeholder="inserisci latitudine..." aria-describedby="addon-wrapping"><br>
                             <span class="input-group-text"><b>Longitudine</b></span>
-                            <input  type="text" name="lon" class="form-control" placeholder="inserisci longitudine" aria-describedby="addon-wrapping"><br>
+                            <input  type="text" name="lon" class="form-control" placeholder="inserisci longitudine..." aria-describedby="addon-wrapping"><br>
                         </div>
 
                         <div style="padding:2vh;" class="input-group">

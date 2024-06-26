@@ -12,7 +12,7 @@
 <body
     class="<?php echo (preg_match('/Mobile|Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ? 'mobile' : 'desktop'); ?>">
     <?php include_once "com.php";
-
+include_once "navbar.php";
     $conn = getdb();
 
     $selectTipo = "SELECT tipo FROM tipologia GROUP BY tipo";

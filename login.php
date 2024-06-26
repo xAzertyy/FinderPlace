@@ -17,8 +17,12 @@
 
         header("Location: http://localhost/prenotazioni/alredylogged.php");
 
+        
 
     }
+
+ 
+    
 
     if (!isset($_SESSION['$password'])) { ?>
 
@@ -54,7 +58,12 @@
         </table>
 
 
-
+        <?php
+        if (isset($_SESSION['error'])) {
+        echo $_SESSION['error'];
+        unset($_SESSION['error']);
+        }
+         ?>
 
     <?php } ?>
 </body>
